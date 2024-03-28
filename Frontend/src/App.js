@@ -1,12 +1,14 @@
+//App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Navbar, Container, Nav, NavDropdown, Row, Col } from "react-bootstrap";
+import { Navbar, Container, Nav, NavDropdown, Row, Col, Card, Button } from "react-bootstrap";
 import IndexPage from "./pages/IndexPage";
-import StorePage from './pages/StorePage';
 import VehiclesPage from './pages/VehiclesPage';
 import ServicePage from './pages/ServicePage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
     return (
@@ -31,22 +33,20 @@ function AppContent() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to='/'>Home</Nav.Link>
-                            <Nav.Link as={Link} to='/films'>Store</Nav.Link>
-                            <Nav.Link as={Link} to='/customers'>Vehicles</Nav.Link>
-                            <Nav.Link as={Link} to='/films'>Service</Nav.Link>
-                            <Nav.Link as={Link} to='/customers'>Login</Nav.Link>
-                            <Nav.Link as={Link} to='/customers'>Dashboard</Nav.Link>
+                            <Nav.Link as={Link} to='/vehicles'>Vehicles</Nav.Link>
+                            <Nav.Link as={Link} to='/service'>Service</Nav.Link>
+                            <Nav.Link as={Link} to='/login'>Login</Nav.Link>
+                            <Nav.Link as={Link} to='/dashboard'>Dashboard</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
             <Routes>
                 <Route path="/" element={<IndexPage />} />
-                <Route path="/films" element={<StorePage />} />
-                <Route path="/customers" element={<VehiclesPage />} />
-                <Route path="/customers" element={<ServicePage />} />
-                <Route path="/customers" element={<LoginPage />} />
-                <Route path="/customers" element={<DashboardPage />} />
+                <Route path="/vehicles" element={<VehiclesPage />} />
+                <Route path="/service" element={<ServicePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
 
                 {/* Define other routes here */}
             </Routes>
