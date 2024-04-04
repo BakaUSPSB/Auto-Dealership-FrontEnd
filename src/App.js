@@ -89,7 +89,6 @@ function AppContent() {
       </Navbar>
       <Routes>
         <Route path="/" element={<IndexPage />} />
-        <Route path="/vehicles" element={<VehiclesPage />} />
         <Route path="/service" element={<ServicePage cars={mockCars} />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />

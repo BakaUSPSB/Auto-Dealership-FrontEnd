@@ -6,10 +6,10 @@ import CarGallery from "../components/car_gallery";
 
 function VehiclesPage(){
     return(
-        <Container fluid>
+        <Container fluid style={{padding: 0, margin: 0}}>
             <Row>
                 {/* Searchbar */}
-                <Col md={12}>
+                <Col md={12} style={{padding: '24px', margin:0, backgroundColor: 'lightgray'}}>
                     <Searchbar />
                 </Col>
             </Row>
