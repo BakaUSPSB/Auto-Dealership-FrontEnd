@@ -14,6 +14,10 @@ const LoginPage = (props) => {
     // You'll update this function later...
   }
 
+  const handleSignUpClick = () => {
+    navigate('../signup'); 
+  };
+
   return (
     <div className={'mainContainer'}>
       <div className={'titleContainer'}>
@@ -42,6 +46,10 @@ const LoginPage = (props) => {
       <br />
       <div className={'inputContainer'}>
         <input className={'inputButton'} type="button" onClick={onButtonClick} value={'Log in'} />
+      </div>
+      <div className={'signupContainer'}>
+        <span>Not a customer?</span> 
+        <span className={'signupLink'} onClick={handleSignUpClick}> Sign up</span>
       </div>
     </div>
   )
