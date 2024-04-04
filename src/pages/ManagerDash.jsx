@@ -2,10 +2,8 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Appointments from "../components/appointments.jsx"
 import PoliciesTable from '../components/policies.jsx';
-//import VehicleForm from '../components/updateVehicles.jsx';
-
-
-
+import NegotiationTable from '../components/negotiations.jsx';
+import CarForm from '../components/updateVehicles.jsx';
 
 const mockAppointments = [
     { firstName: 'John', lastName: 'Doe', type: 'test drive' },
@@ -48,11 +46,13 @@ const Dashboard = () => {
         <Col xs={6} md={6}>
           {/* Bottom Left Quadrant */}
           <Container fluid className="quadrant">
+            <CarForm></CarForm>
           </Container>
         </Col>
         <Col xs={6} md={6}>
           {/* Bottom Right Quadrant */}
           <Container fluid className="quadrant">
+            <NegotiationTable></NegotiationTable>
           </Container>
         </Col>
       </Row>

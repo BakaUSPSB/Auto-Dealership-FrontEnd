@@ -1,57 +1,52 @@
 import React, { useState } from 'react';
-import { Form, Button, Col } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 const VehicleForm = () => {
-  const [vehicleData, setVehicleData] = useState({
+  const [formData, setFormData] = useState({
     make: '',
     model: '',
     year: '',
     mileage: '',
     transmissionType: '',
-    color: '',
-    photos: []
+    color: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setVehicleData({ ...vehicleData, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to handle form submission
-    console.log('Submitted Vehicle Data:', vehicleData);
+    // Here you can handle form submission, like sending data to backend or other actions
+    console.log('Form submitted:', formData);
   };
 
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="make">
         <Form.Label>Make</Form.Label>
-        <Form.Control type="text" name="make" value={vehicleData.make} onChange={handleChange} />
+        <Form.Control type="text" placeholder="Enter make" name="make" value={formData.make} onChange={handleChange} />
       </Form.Group>
       <Form.Group controlId="model">
         <Form.Label>Model</Form.Label>
-        <Form.Control type="text" name="model" value={vehicleData.model} onChange={handleChange} />
+        <Form.Control type="text" placeholder="Enter model" name="model" value={formData.model} onChange={handleChange} />
       </Form.Group>
-      <Form.Row>
-        <Form.Group as={Col} controlId="year">
-          <Form.Label>Year</Form.Label>
-          <Form.Control type="text" name="year" value={vehicleData.year} onChange={handleChange} />
-        </Form.Group>
-        <Form.Group as={Col} controlId="mileage">
-          <Form.Label>Mileage</Form.Label>
-          <Form.Control type="text" name="mileage" value={vehicleData.mileage} onChange={handleChange} />
-        </Form.Group>
-      </Form.Row>
+      <Form.Group controlId="year">
+        <Form.Label>Year</Form.Label>
+        <Form.Control type="text" placeholder="Enter year" name="year" value={formData.year} onChange={handleChange} />
+      </Form.Group>
+      <Form.Group controlId="mileage">
+        <Form.Label>Mileage</Form.Label>
+        <Form.Control type="text" placeholder="Enter mileage" name="mileage" value={formData.mileage} onChange={handleChange} />
+      </Form.Group>
       <Form.Group controlId="transmissionType">
         <Form.Label>Transmission Type</Form.Label>
-        <Form.Control type="text" name="transmissionType" value={vehicleData.transmissionType} onChange={handleChange} />
+        <Form.Control type="text" placeholder="Enter transmission type" name="transmissionType" value={formData.transmissionType} onChange={handleChange} />
       </Form.Group>
       <Form.Group controlId="color">
         <Form.Label>Color</Form.Label>
-        <Form.Control type="text" name="color" value={vehicleData.color} onChange={handleChange} />
+        <Form.Control type="text" placeholder="Enter color" name="color" value={formData.color} onChange={handleChange} />
       </Form.Group>
       <Button variant="primary" type="submit">
         Submit

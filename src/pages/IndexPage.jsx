@@ -15,7 +15,9 @@ const IndexPage = () => {
     const highlightedImageStyle = {
         width: '100%', // Ensure the image spans the full width of its container
         height: '60vh', // Use 50% of the viewport height for the image's height
-        objectFit: 'cover' // Cover the container without changing the aspect ratio
+        objectFit: 'cover', // Cover the container without changing the aspect ratio
+        margin: 0,
+        padding: 0
     };
 
     // Function to handle automatic carousel rotation every 2 seconds
@@ -27,10 +29,10 @@ const IndexPage = () => {
     }, [cardImages.length]);
 
     return (
-        <Container fluid>
-            <Row>
+        <Container fluid style={{margin: 0, padding: 0}}>
+            <Row style={{margin: 0, padding: 0}}>
                 {/* Top half for displaying highlighted image */}
-                <Col md={12} className="mb-4">
+                <Col md={12} className="mb-4"  style={{margin: 0, padding: 0}}>
                     <Image src={cardImages[highlightedIndex]} style={highlightedImageStyle} />
                 </Col>
             </Row>
