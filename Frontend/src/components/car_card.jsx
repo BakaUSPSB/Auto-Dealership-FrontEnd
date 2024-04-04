@@ -1,29 +1,27 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
-const CarCard = ({ imageSrc }) => {
+const CarCard = ({ imageSrc, highlighted }) => {
   const cardStyle = {
-    width: '18rem', // Set a fixed width for the card
+    width: '250px', // Set a fixed width for the card
     height: '300px', // Set a fixed height for the card
-    margin: '1rem' // Optional: added to ensure some spacing around cards
+    border: highlighted ? '2px solid blueviolet' : '2px solid transparent', // Conditionally apply border
+    display: 'flex', // Use flex to control the layout of the card
+    flexDirection: 'column', // Stack the text and button vertically
+    justifyContent: 'space-between' // Distribute space evenly
   };
 
   const cardImgStyle = {
-    height: '200px', // Maintain a fixed height for the image
+    flex: '1', // Ensure the image takes up available space within the card
+    height: '100%', // Set the height of the image to fill the card
+    width: '100%', // Set the width of the image to fill the card
     objectFit: 'cover' // Ensure the aspect ratio is maintained
-  };
-
-  const cardBodyStyle = {
-    display: 'flex', // Use flex to control the layout of the card body
-    flexDirection: 'column', // Stack the text and button vertically
-    justifyContent: 'space-between', // Distribute space evenly
-    flexGrow: 1 // Allow the card body to fill available space
   };
 
   return (
     <Card style={cardStyle} className="mx-2">
       <Card.Img variant="top" src={imageSrc} style={cardImgStyle} />
-      <Card.Body style={cardBodyStyle}>
+      <Card.Body>
         <Card.Text>Placeholder Text</Card.Text>
         <Button variant="primary">Click Me</Button>
       </Card.Body>

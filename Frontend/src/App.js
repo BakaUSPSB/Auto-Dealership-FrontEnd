@@ -7,7 +7,7 @@ import VehiclesPage from './pages/VehiclesPage';
 import ServicePage from './pages/ServicePage';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 function App() {
