@@ -24,6 +24,7 @@ import ServicePage from "./pages/ServicePage";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import ManagerDash from "./pages/ManagerDash";
+import TechDash from "./pages/TechDash";
 
 const mockCars = [
   { make: "Toyota", model: "Camry", year: 2018 },
@@ -79,6 +80,9 @@ function AppContent() {
               <Nav.Link as={Link} to="/managerdash">
                 Manger Dashboard
               </Nav.Link>
+              <Nav.Link as={Link} to="/techdash">
+                Tech Dashboard
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -90,6 +94,7 @@ function AppContent() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/managerdash" element={<ManagerDash />} />
+        <Route path="/techdash" element={<TechDash />} />
         {/* Define other routes here */}
       </Routes>
     </div>
