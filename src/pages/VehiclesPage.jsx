@@ -9,7 +9,7 @@ function VehiclesPage(){
         <Container fluid>
             <Row>
                 {/* Searchbar */}
-                <Col md={12}>
+                <Col md={12} style={{padding: '24px'}}>
                     <Searchbar />
                 </Col>
             </Row>
