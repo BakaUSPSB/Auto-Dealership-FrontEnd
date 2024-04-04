@@ -65,9 +65,7 @@ function AppContent() {
               <Nav.Link as={Link} to="/">
                 Home
               </Nav.Link>
-              <Nav.Link as={Link} to="/vehicles">
-                Vehicles
-              </Nav.Link>
+
               <Nav.Link as={Link} to="/service">
                 Service
               </Nav.Link>
