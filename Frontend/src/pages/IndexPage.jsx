@@ -42,12 +42,6 @@ const IndexPage = () => {
                         cardImages={cardImages} />
                 </Col>
             </Row>
-            <Row>
-                {/* Searchbar */}
-                <Col md={12}>
-                    <Searchbar />
-                </Col>
-            </Row>
             <Row fluid // Ensure full-width container
             className="d-flex align-items-center justify-content-center"
             style={{
