@@ -3,6 +3,7 @@ import Carousel from '../components/card_carousel'; // Update the path according
 import Searchbar from "../components/search_bar";
 import CarGallery from "../components/car_gallery.jsx";
 import { Container, Row, Col, Image } from 'react-bootstrap';
+import VehiclesPage from "./VehiclesPage";
 
 const IndexPage = () => {
     const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -58,7 +59,7 @@ const IndexPage = () => {
             }}>
                 {/* Search Gallery */}
                 <Col md={12}>
-                    <CarGallery />
+                    <VehiclesPage />
                 </Col>
             </Row>
         </Container>
