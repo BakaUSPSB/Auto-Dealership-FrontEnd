@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import axios from 'axios';
-import DateOfBirthPicker from '../components/DateofBirthPicker'; // Import the DateOfBirthPicker component
+import DateOfBirthPicker from '../components/DateofBirthPicker';
 
 function LoginPage() {
     const [showSignUp, setShowSignUp] = useState(false);
