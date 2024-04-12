@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {Form, Button, Col, Row, Container, Pagination, Card} from 'react-bootstrap';
-import axios from 'axios';
+import {Form, Col, Row, Container, Pagination, Card} from 'react-bootstrap';
 import CarCard from './car_card';
+import CarService from '../services/CarService';
 
 const CarGallery = () => {
     // States for pagination and items per page
@@ -11,17 +11,15 @@ const CarGallery = () => {
     const [cars, setCars] = useState([]);
 
     useEffect(() => {
-        const fetchCars = async () => {
-            try {
-                const response = await axios.get(`/api/cars?page=${currentPage}&limit=${itemsPerPage}`);
-                setCars(response.data.cars); // Assuming response has a 'cars' array
-                setTotalItems(response.data.total); // Assuming total number of cars is returned
-            } catch (error) {
-                console.error('Failed to fetch cars:', error);
-            }
-        };
-
-        fetchCars();
+        // get cars from the API using the CarService
+        CarService.getVehicles(currentPage, itemsPerPage, '')
+            .then((response) => {
+                setCars(response.data.vehicles);
+                setTotalItems(response.data.num_of_results);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }, [currentPage, itemsPerPage]);
 
     // Calculate total pages
@@ -141,6 +139,7 @@ const CarGallery = () => {
                             cars.map((car, index) => (
                                 <CarCard
                                     key={index}
+                                    vehicle={car}
                                     imageSrc={car.image}
                                     highlighted={false}
                                 />

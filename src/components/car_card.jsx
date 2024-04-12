@@ -1,7 +1,11 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 
-const CarCard = ({ imageSrc, highlighted }) => {
+const CarCard = ({ vehicle, imageSrc, highlighted }) => {
+
+  // if there is a vehicle object, extract the year, make, model, and price otherwise set to empty string
+  vehicle = vehicle || { year: '', make: '', model: '', price: '' };
+
   const cardStyle = {
     width: '250px', // Set a fixed width for the card
     height: '300px', // Set a fixed height for the card
@@ -22,7 +26,8 @@ const CarCard = ({ imageSrc, highlighted }) => {
     <Card style={cardStyle} className="mx-2">
       <Card.Img variant="top" src={imageSrc} style={cardImgStyle} />
       <Card.Body>
-        <Card.Text>Placeholder Text</Card.Text>
+        <Card.Text>{vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}</Card.Text>
+        <Card.Text>{vehicle.price}</Card.Text>
         <Button variant="primary">Click Me</Button>
       </Card.Body>
     </Card>
