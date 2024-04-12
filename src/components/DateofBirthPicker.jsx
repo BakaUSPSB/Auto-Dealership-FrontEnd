@@ -1,17 +1,10 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/styles.css'
 
-const DateOfBirthPicker = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const handleChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  return (
-    <div>
-
+const DateOfBirthPicker = ({ selectedDate, handleChange }) => {
+    return (
       <DatePicker
         selected={selectedDate}
         onChange={handleChange}
@@ -20,13 +13,9 @@ const DateOfBirthPicker = () => {
         scrollableYearDropdown
         yearDropdownItemNumber={100}
         placeholderText="Select date of birth"
-        calendarContainer={document.querySelector('.date-picker-container')} 
+        calendarContainer={document.querySelector('.date-picker-container')} // Specify the container element
       />
-      {selectedDate && (
-        <p>Selected Date: {selectedDate.toLocaleDateString()}</p>
-      )}
-    </div>
-  );
-};
+    );
+  };
 
 export default DateOfBirthPicker;

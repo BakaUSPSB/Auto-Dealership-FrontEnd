@@ -62,8 +62,7 @@ function LoginPage() {
                         <h2>{showSignUp ? 'Sign Up' : 'Login'}</h2>
                     </div>
                     {signupSuccess && ( // Render success message if signupSuccess is true
-                        <Alert variant="success">User created successfully!</Alert>
-                    )}
+                    <Alert variant="success" style={{ fontSize: '12px', padding: '8px' }}>User created successfully!</Alert>                    )}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
@@ -86,6 +85,7 @@ function LoginPage() {
                                 </Form.Group>
                                 <Form.Group controlId="formBasicDateofBirth">
                                     <Form.Label>Date of Birth</Form.Label>
+                                    <br></br>
                                     <DateOfBirthPicker
                                         selectedDate={formData.dateOfBirth}
                                         handleChange={(date) => setFormData({ ...formData, dateOfBirth: date })}
@@ -93,6 +93,7 @@ function LoginPage() {
                                 </Form.Group>
                             </>
                         )}
+                        <br></br>
                         <Button variant="primary" type="submit" block>
                             {showSignUp ? 'Sign Up' : 'Login'}
                         </Button>
