@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import DateOfBirthPicker from '../components/DateofBirthPicker';
+import { getMatches, isValid } from 'driver-license-validator';
 
 function LoginPage() {
     const [showSignUp, setShowSignUp] = useState(false);
@@ -16,6 +17,7 @@ function LoginPage() {
         dateOfBirth: ''
     });
     const [signupSuccess, setSignupSuccess] = useState(false); // State to track signup success
+    const [driverLicenseError, setDriverLicenseError] = useState('');
 
     const toggleForm = () => {
         setShowSignUp(!showSignUp);
@@ -41,6 +43,22 @@ function LoginPage() {
             }
         } catch (error) {
             console.error('Error:', error);
+        }
+    };
+    // Function to validate driver's license number
+    const validateDriverLicense = (driverLicense) => {
+        const matches = getMatches(driverLicense); // Get matches for driver's license number format
+        const isValidLicense = isValid(matches); // Check if the driver's license number is valid
+        return isValidLicense;
+    };
+    // Function to handle driver's license number change
+    const handleDriverLicenseChange = (e) => {
+        const { value } = e.target;
+        setFormData({ ...formData, driverLicenseNum: value });
+        if (value && !validateDriverLicense(value)) {
+            setDriverLicenseError('Invalid driver\'s license number format');
+        } else {
+            setDriverLicenseError('');
         }
     };
 
@@ -90,6 +108,13 @@ function LoginPage() {
                                         selectedDate={formData.dateOfBirth}
                                         handleChange={(date) => setFormData({ ...formData, dateOfBirth: date })}
                                     />
+                                </Form.Group>
+                                <Form.Group controlId="formBasicDriverLicense">
+                                    <Form.Label>Driver's License Number</Form.Label>
+                                    <Form.Control type="text" name="driverLicenseNum" placeholder="Enter Driver's License Number" onChange={handleDriverLicenseChange} />
+                                    {driverLicenseError && (
+                                        <Alert variant="danger" style={{ fontSize: '12px', padding: '8px', marginTop: '5px' }}>{driverLicenseError}</Alert>
+                                    )}
                                 </Form.Group>
                             </>
                         )}
