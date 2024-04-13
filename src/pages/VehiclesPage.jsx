@@ -16,7 +16,7 @@ function VehiclesPage(){
             <Row>
                 {/* Search Gallery */}
                 <Col md={12}>
-                    {/* <CarGallery /> */}
+                    <CarGallery />
                 </Col>
             </Row>
         </Container>
