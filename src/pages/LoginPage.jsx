@@ -95,7 +95,7 @@ function LoginPage() {
                     // Store the token in local storage
                     localStorage.setItem('token', response.token);
                     // Redirect to the home page
-                    window.location.href = '/';
+                    // window.location.href = '/';
                 }
             } catch (error) {
                 console.error(error);

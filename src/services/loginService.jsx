@@ -6,7 +6,10 @@ export default class LoginService {
     static async login(email, password) {
         try {
             const response = await axios
-            .post(`${API_ROOT_URL}/auth/customer/login`, { email, password });
+            .post(`${API_ROOT_URL}/auth/customer/login`, { 
+                email: email, 
+                password: password 
+            });
             return response.data;
         } catch (error) {
             console.error(error);
