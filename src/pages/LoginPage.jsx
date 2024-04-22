@@ -18,9 +18,15 @@ function LoginPage() {
     const [passwordError, setPasswordError] = useState(''); // New state for password error
     const [signupSuccess, setSignupSuccess] = useState(false); // State to track signup success
     const [driverLicenseError, setDriverLicenseError] = useState('');
+    const [signupError, setSignupError] = useState('');
+
 
     const toggleForm = () => {
         setShowSignUp(!showSignUp);
+    };
+    
+    const sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
     };
 
     const handleChange = (e) => {
@@ -78,11 +84,16 @@ function LoginPage() {
                     formData.dateOfBirth,
                     formData.driverLicenseNum
                 );
-                if (response) {
+                if(response.code === 400){
+                    setSignupSuccess(false);
+                    setSignupError(response.message);
+                }
+                if (response.code === 201) {
                     setSignupSuccess(true);
                 }
             } catch (error) {
-                console.error(error);
+                    console.error(error);
+                
             }
         } else {
             if (!validateEmail(formData.email)) {
@@ -93,9 +104,11 @@ function LoginPage() {
                 const response = await LoginService.login(formData.email, formData.password);
                 if (response) {
                     // Store the token in local storage
-                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('token', response.data.access_token);
+                    localStorage.setItem('id',response.data.customer_id);
+                    localStorage.setItem('firstName',response.data.first_name);
                     // Redirect to the home page
-                    // window.location.href = '/';
+                    sleep(2000).then(() => {window.location.href = '/';})
                 }
             } catch (error) {
                 console.error(error);
@@ -138,6 +151,9 @@ function LoginPage() {
                     </div>
                     {signupSuccess && ( // Render success message if signupSuccess is true
                         <Alert variant="success" style={{ fontSize: '12px', padding: '8px' }}>User created successfully!</Alert>)}
+                    {signupError && (
+    <Alert variant="danger" style={{ fontSize: '12px', padding: '8px' }}>{signupError}</Alert>
+)}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>

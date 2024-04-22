@@ -19,12 +19,9 @@ import {
   Button,
 } from "react-bootstrap";
 import IndexPage from "./pages/IndexPage";
-import VehiclesPage from "./pages/VehiclesPage";
 import ServicePage from "./pages/ServicePage";
 import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import ManagerDash from "./pages/ManagerDash";
-import TechDash from "./pages/TechDash";
+import Dashboard from "./components/Dashboard";
 
 const mockCars = [
   { make: "Toyota", model: "Camry", year: 2018 },
@@ -52,6 +49,11 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="bg-gray">
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -69,17 +71,15 @@ function AppContent() {
               <Nav.Link as={Link} to="/service">
                 Service
               </Nav.Link>
-              <Nav.Link as={Link} to="/login">
-                Login
-              </Nav.Link>
+              {localStorage.getItem("token") ? (
+                <Nav.Link onClick={handleLogout}> Logout</Nav.Link>
+              ) : (
+                <Nav.Link as={Link} to="/login">
+                  Login
+                </Nav.Link>
+              )}
               <Nav.Link as={Link} to="/dashboard">
                 Dashboard
-              </Nav.Link>
-              <Nav.Link as={Link} to="/managerdash">
-                Manger Dashboard
-              </Nav.Link>
-              <Nav.Link as={Link} to="/techdash">
-                Tech Dashboard
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -89,9 +89,7 @@ function AppContent() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/service" element={<ServicePage cars={mockCars} />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/managerdash" element={<ManagerDash />} />
-        <Route path="/techdash" element={<TechDash />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* Define other routes here */}
       </Routes>
     </div>
