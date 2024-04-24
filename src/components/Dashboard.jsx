@@ -2,6 +2,7 @@ import React from "react";
 import ManagerDash from "../pages/ManagerDash";
 import TechDash from "../pages/TechDash";
 import DashboardPage from "../pages/DashboardPage";
+import LoginPage from "../pages/LoginPage";
 
 
 function Dashboard(){
@@ -13,8 +14,10 @@ function Dashboard(){
             return <ManagerDash />;
         case "technician":
             return <TechDash />;
-        default:
+        case "customer":
             return <DashboardPage />;
+        default:
+            return <LoginPage />;
     }
 }
 
