@@ -22,6 +22,7 @@ import IndexPage from "./pages/IndexPage";
 import ServicePage from "./pages/ServicePage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./components/Dashboard";
+import AdminLogin from "./pages/AdminLogin";
 
 const mockCars = [
   { make: "Toyota", model: "Camry", year: 2018 },
@@ -91,6 +92,7 @@ function AppContent() {
         <Route path="/service" element={<ServicePage cars={mockCars} />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin_login" element={<AdminLogin />} />
         {/* Define other routes here */}
       </Routes>
     </div>
