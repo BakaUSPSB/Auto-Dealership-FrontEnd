@@ -9,6 +9,7 @@ const CarGallery = () => {
     const [itemsPerPage, setItemsPerPage] = useState(25);
     const [totalItems, setTotalItems] = useState(0);
     const [cars, setCars] = useState([]);
+    const containerRef = React.useRef(null);
 
     useEffect(() => {
         // get cars from the API using the CarService
@@ -28,12 +29,14 @@ const CarGallery = () => {
     // Change page
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+        containerRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     // Change items per page
     const handleItemsPerPageChange = (event) => {
         setItemsPerPage(parseInt(event.target.value, 10));
         setCurrentPage(1); // Reset to the first page
+        containerRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     // Generate pagination items
@@ -67,7 +70,7 @@ const CarGallery = () => {
     };
 
     return (
-        <Container fluid style={{margin: 0, padding: 0}}>
+        <Container fluid style={{margin: 0, padding: 0}} ref={containerRef}>
             <Row>
                 <Col md={3} style={{width: '300px', minWidth: '300px', backgroundColor: 'lightgray'}}>
                     {/* Filter section */}
