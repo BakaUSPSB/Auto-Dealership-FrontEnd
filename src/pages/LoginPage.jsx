@@ -102,13 +102,20 @@ function LoginPage() {
             }
             try {
                 const response = await LoginService.login(formData.email, formData.password);
-                if (response) {
+                if (response.code === 200) {
                     // Store the token in local storage
                     localStorage.setItem('token', response.data.access_token);
                     localStorage.setItem('id',response.data.customer_id);
                     localStorage.setItem('firstName',response.data.first_name);
+                    if(!response.data.role){
+                        localStorage.setItem('role','customer');
+                    }
                     // Redirect to the home page
-                    sleep(2000).then(() => {window.location.href = '/';})
+                    sleep(500).then(() => {window.location.href = '/';})
+                }
+                if(response.code === 400){
+                    setSignupSuccess(false);
+                    setSignupError(response.message);
                 }
             } catch (error) {
                 console.error(error);
