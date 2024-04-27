@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Table, Form, Button } from 'react-bootstrap';
+import '../styles/tableStyle.css'
 
 const ServicePage = ({ cars }) => {
   const [selectedCar, setSelectedCar] = useState(null);
@@ -11,7 +12,22 @@ const ServicePage = ({ cars }) => {
   };
 
   const handleServiceChange = (e) => {
-    setSelectedService(e.target.value);
+    const { name, checked } = e.target;
+    if (name === 'all') {
+      setSelectedService({
+        brakes: checked,
+        oil: checked,
+        tire: checked,
+        wipers: checked,
+        all: checked,
+      });
+    } else {
+      setSelectedService(prevState => ({
+        ...prevState,
+        [name]: checked,
+        all: prevState.brakes && prevState.oil && prevState.tire && prevState.wipers && checked,
+      }));
+    }
   };
 
   const handleNotesChange = (e) => {
@@ -63,16 +79,18 @@ const ServicePage = ({ cars }) => {
       <Row>
         <Col>
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="serviceSelect">
+          <Form.Group controlId="serviceSelect">
               <Form.Label>Select Service:</Form.Label>
-              <Form.Control as="select" value={selectedService} onChange={handleServiceChange}>
-                <option value="">Select...</option>
-                <option value="brakes">Brakes</option>
-                <option value="oil">Oil</option>
-                <option value="tire">Tire</option>
-                <option value="wipers">Wipers</option>
-                <option value="all">All</option>
-              </Form.Control>
+              {['brakes', 'oil', 'tire', 'wipers', 'all'].map(service => (
+                <Form.Check 
+                  type="checkbox"
+                  id={service}
+                  name={service}
+                  label={service.charAt(0).toUpperCase() + service.slice(1)}
+                  checked={selectedService[service]}
+                  onChange={handleServiceChange}
+                />
+              ))}
             </Form.Group>
             <Form.Group controlId="notes">
               <Form.Label>Notes:</Form.Label>
