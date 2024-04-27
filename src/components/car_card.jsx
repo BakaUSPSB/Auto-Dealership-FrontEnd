@@ -28,7 +28,7 @@ const CarCard = ({ vehicle, imageSrc, highlighted }) => {
       <Card.Body>
         <Card.Text>{vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}</Card.Text>
         <Card.Text>{'$' + vehicle.price}</Card.Text>
-        <Button variant="primary">Click Me</Button>
+        <Button variant="primary">Buy Now</Button>
       </Card.Body>
     </Card>
   );

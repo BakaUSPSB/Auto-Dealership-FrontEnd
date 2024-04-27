@@ -3,10 +3,10 @@ import { Table, Button } from 'react-bootstrap';
 
 const PoliciesTable = () => {
   const policies = [
-    { name: 'Wiper Change', description: 'Replace old wipers with new ones' },
-    { name: 'Brake Change', description: 'Replace worn-out brake pads and rotors' },
-    { name: 'Oil Change', description: 'Replace engine oil and oil filter' },
-    { name: 'Tire Change/Rotation', description: 'Replace tires or rotate existing tires for even wear' }
+    { name: 'Wiper Change', description: 'Replace old wipers with new ones', price: 50},
+    { name: 'Brake Change', description: 'Replace worn-out brake pads and rotors',price: 100},
+    { name: 'Oil Change', description: 'Replace engine oil and oil filter', price: 75},
+    { name: 'Tire Change/Rotation', description: 'Replace tires or rotate existing tires for even wear', price: 150},
   ];
 
   const handleEdit = (policy) => {
@@ -20,6 +20,7 @@ const PoliciesTable = () => {
         <tr>
           <th>Policy</th>
           <th>Description</th>
+          <th>Price</th>
           <th>Edit</th>
         </tr>
       </thead>
@@ -28,6 +29,7 @@ const PoliciesTable = () => {
           <tr key={index}>
             <td>{policy.name}</td>
             <td>{policy.description}</td>
+            <td>${policy.price}</td>
             <td>
               <Button onClick={() => handleEdit(policy)}>Edit</Button>
             </td>
