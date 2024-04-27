@@ -9,19 +9,27 @@ const CarGallery = () => {
     const [itemsPerPage, setItemsPerPage] = useState(25);
     const [totalItems, setTotalItems] = useState(0);
     const [cars, setCars] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(''); // Add this line
     const containerRef = React.useRef(null);
 
     useEffect(() => {
         // get cars from the API using the CarService
-        CarService.getVehicles(currentPage, itemsPerPage, '')
+        CarService.getVehicles(currentPage, itemsPerPage, searchQuery)
             .then((response) => {
-                setCars(response.data.vehicles);
+                const vehiclesWithImages = response.data.vehicles.map(vehicle => ({
+                    ...vehicle,
+                    image: getRandomImage(),
+                }));
+                setCars(vehiclesWithImages);
                 setTotalItems(response.data.num_of_results);
             })
             .catch((error) => {
                 console.error(error);
+                if (error.response && error.response.status === 404) {
+                    setCars([]);
+                }
             });
-    }, [currentPage, itemsPerPage]);
+    }, [currentPage, itemsPerPage,searchQuery]);
 
     // Calculate total pages
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -69,12 +77,21 @@ const CarGallery = () => {
         ));
     };
 
+    const getRandomImage = () => {
+        const randomNumber = Math.floor(Math.random() * 4) + 1; // generates a random number between 1 and 4
+        return `${process.env.PUBLIC_URL}/cars/${randomNumber}.jpg`; // returns the path to the random image
+    };
+
     return (
         <Container fluid style={{margin: 0, padding: 0}} ref={containerRef}>
             <Row>
                 <Col md={3} style={{width: '300px', minWidth: '300px', backgroundColor: 'lightgray'}}>
                     {/* Filter section */}
                     <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Search</Form.Label>
+                            <Form.Control type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}/>
+                        </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Items per page</Form.Label>
                             <Form.Control as="select" value={itemsPerPage} onChange={handleItemsPerPageChange}>
