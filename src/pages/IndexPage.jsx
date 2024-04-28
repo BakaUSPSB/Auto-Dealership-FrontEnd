@@ -1,65 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import Carousel from '../components/homepage/card_carousel'; // Update the path accordingly
-import Searchbar from "../components/search_bar";
-import CarGallery from "../components/homepage/car_gallery.jsx";
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import VehiclesPage from "./VehiclesPage";
+import CardCarousel from "../components/homepage/card_carousel";
 
 const IndexPage = () => {
-    const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [highlightedImageSrc, setHighlightedImageSrc] = useState("");
 
-    // Assuming the 'cars' folder is under the 'public' directory
-    const cardImages = Array.from({ length: 5 }, (_, i) => `${process.env.PUBLIC_URL}/cars/${i + 2}/${i + 2}_1.jpg`);
-
-    // Styles for the highlighted image to cover the top half of the viewport
-    const highlightedImageStyle = {
-        width: '100%', // Ensure the image spans the full width of its container
-        height: '60vh', // Use 50% of the viewport height for the image's height
-        objectFit: 'cover', // Cover the container without changing the aspect ratio
-        margin: 0,
-        padding: 0
+  // Fetch car data from the API
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const response = await fetch(
+          "https://b5g8mt0d-5000.use.devtunnels.ms/api/inventory/top-vehicles"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        const cars = data.data;
+        if (cars.length > 0) {
+          const highlightedCar = cars[highlightedIndex];
+          if (highlightedCar) {
+            const imageSrc = `${process.env.PUBLIC_URL}/cars/${highlightedCar.make}/${highlightedCar.make}.jpg`;
+            setHighlightedImageSrc(imageSrc);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching car data:", error);
+      }
     };
 
-    // Function to handle automatic carousel rotation every 2 seconds
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setHighlightedIndex((prevIndex) => (prevIndex + 1) % cardImages.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [cardImages.length]);
+    fetchCars();
 
-    return (
-        <Container fluid style={{margin: 0, padding: 0}}>
-            <Row style={{margin: 0, padding: 0}}>
-                {/* Top half for displaying highlighted image */}
-                <Col md={12} className="mb-4"  style={{margin: 0, padding: 0}}>
-                    <Image src={cardImages[highlightedIndex]} style={highlightedImageStyle} />
-                </Col>
-            </Row>
+    // Clear interval on unmount
+    return () => clearInterval();
+  }, [highlightedIndex]);
 
-            <Row>
-                {/* Bottom half for carousel */}
-                <Col md={12}>
-                    <Carousel highlightedIndex={highlightedIndex} setHighlightedIndex={setHighlightedIndex}
-                        cardImages={cardImages} />
-                </Col>
-            </Row>
-            <Row fluid // Ensure full-width container
-            className="d-flex align-items-center justify-content-center"
+  // Styles for the highlighted image
+  const highlightedImageStyle = {
+    width: "100%",
+    height: "60vh",
+    objectFit: "cover",
+    margin: 0,
+    padding: 0,
+  };
+
+  // Function to handle automatic carousel rotation every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHighlightedIndex((prevIndex) => (prevIndex + 1) % 5);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Define the fade-in-out class directly within the component
+  const fadeInOutStyle = `
+        .fade-in-out {
+            transition: opacity 0.5s ease-in-out;
+        }
+    `;
+
+  return (
+    <Container fluid id="index-page-container">
+      {/* Include the style tag with the fade-in-out class */}
+      <style>{fadeInOutStyle}</style>
+
+      <Row id="top-image-row">
+        {/* Top half for displaying highlighted image */}
+        <Col md={12} className="mb-4" id="highlighted-image-column">
+          <Image
+            src={highlightedImageSrc}
             style={{
-                backgroundImage: `url('/cars/carbackground.jpg')`, // Path to the image from the public directory
-                backgroundSize: 'cover', // Cover the entire page
-                backgroundPosition: 'center', // Center the image
-                backgroundAttachment: 'fixed', // Keep the image fixed while scrolling
-                minHeight: '100vh' // Ensure minimum height of the viewport
-            }}>
-                {/* Search Gallery */}
-                <Col md={12}>
-                    <VehiclesPage />
-                </Col>
-            </Row>
-        </Container>
-    );
+              ...highlightedImageStyle,
+              opacity: highlightedImageSrc ? 1 : 0,
+            }}
+            id="highlighted-image"
+            className="fade-in-out" // Apply the fade-in-out class here
+            onError={(e) =>
+              (e.target.src = `${process.env.PUBLIC_URL}/cars/dealership.jpg`)
+            }
+          />
+        </Col>
+      </Row>
+
+      <Row id="carousel-row">
+        {/* Bottom half for carousel */}
+        <Col md={12} id="carousel-column">
+          <CardCarousel
+            highlightedIndex={highlightedIndex}
+            setHighlightedIndex={setHighlightedIndex}
+            setHighlightedImageSrc={setHighlightedImageSrc} // Pass the function here
+          />
+        </Col>
+      </Row>
+
+      <Row
+        fluid
+        id="search-gallery-row"
+        className="d-flex align-items-center justify-content-center"
+      >
+        {/* Search Gallery */}
+        <Col md={12} id="search-gallery-column">
+          <VehiclesPage />
+        </Col>
+      </Row>
+    </Container>
+  );
 };
 
 export default IndexPage;
