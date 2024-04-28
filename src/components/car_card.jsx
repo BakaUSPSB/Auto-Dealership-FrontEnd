@@ -18,14 +18,16 @@ const CarCard = ({ vehicle, imageSrc, highlighted }) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const cardStyle = {
-    width: "250px", // Set a fixed width for the card
-    height: "300px", // Set a fixed height for the card
-    border: highlighted ? "2px solid blueviolet" : "2px solid transparent", // Conditionally apply border
-    display: "flex", // Use flex to control the layout of the card
-    flexDirection: "column", // Stack the text and button vertically
-    justifyContent: "space-between", // Distribute space evenly
-  };
+
+  //OLD
+  // const cardStyle = {
+  //   width: "250px", // Set a fixed width for the card
+  //   height: "300px", // Set a fixed height for the card
+  //   border: highlighted ? "2px solid blueviolet" : "2px solid transparent", // Conditionally apply border
+  //   display: "flex", // Use flex to control the layout of the card
+  //   flexDirection: "column", // Stack the text and button vertically
+  //   justifyContent: "space-between", // Distribute space evenly
+  // };
 
   const cardImgStyle = {
     flex: "1", // Ensure the image takes up available space within the card
@@ -36,7 +38,7 @@ const CarCard = ({ vehicle, imageSrc, highlighted }) => {
 
   return (
     <>
-      <Card style={cardStyle} className="mx-2">
+      <Card className="mx-2">
         <Card.Img variant="top" src={imageSrc} style={cardImgStyle} />
         <Card.Body>
           <Card.Text>
