@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Col, Row, Container, Pagination, Card } from "react-bootstrap";
 import CarCard from "./car_card";
-import CarService from "../services/CarService";
+import CarService from "../../services/CarService";
 
 const CarGallery = () => {
   // States for pagination and items per page
