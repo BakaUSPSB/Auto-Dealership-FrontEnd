@@ -132,7 +132,7 @@ const CarGallery = () => {
             {/* Category Checkboxes */}
             <Form.Group className="mb-3">
               <Form.Label>Body Type</Form.Label>
-              {["Sedan", "SUV", "Coupe", "Truck"].map((type) => (
+              {["Hatchback", "Sedan", "SUV", "Coupe", "Truck"].map((type) => (
                 <Form.Check
                   type="checkbox"
                   id={`body-type-${type}`}
@@ -184,14 +184,12 @@ const CarGallery = () => {
           <Row>
             {cars.length > 0
               ? cars.map((car, index) => (
-                  <Col md={3} key={index} className="mb-4">
-                    <CarCard
-                      key={index}
-                      vehicle={car}
-                      imageSrc={car.image}
-                      highlighted={false}
-                    />
-                  </Col>
+                  <CarCard
+                    key={index}
+                    vehicle={car}
+                    imageSrc={car.image}
+                    highlighted={false}
+                  />
                 ))
               : renderPlaceholders()}
           </Row>
