@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Card, Button, Modal } from "react-bootstrap";
+import negotiationService from "../services/negotiationService";
 
 const CarCard = ({ vehicle, imageSrc, highlighted }) => {
   // if there is a vehicle object, extract the year, make, model, and price otherwise set to empty string
@@ -15,10 +16,30 @@ const CarCard = ({ vehicle, imageSrc, highlighted }) => {
     fuel_type: "",
   };
   const [show, setShow] = useState(false);
+  const [textInput, setTextInput] = useState("");
+  const [numberInput, setNumberInput] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (localStorage.getItem("token") === null) {
+        alert("You must be logged in to make an offer");
+        return;
+      }
+      const response = await negotiationService.negotiation(
+        vehicle.id,
+        numberInput,
+        textInput
+      );
+      if (response.code === 201) {
+      }
+      if (response.code === 400) {
+        alert("Offer has not been made");
+      }
+    } catch (error) {}
+  };
   //OLD
   // const cardStyle = {
   //   width: "250px", // Set a fixed width for the card
@@ -73,6 +94,21 @@ const CarCard = ({ vehicle, imageSrc, highlighted }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
+          <input
+            type="text"
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
+            placeholder="Message"
+          />
+          <input
+            type="number"
+            value={numberInput}
+            onChange={(e) => setNumberInput(e.target.value)}
+            placeholder="Offer"
+          />
+          <Button variant="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
