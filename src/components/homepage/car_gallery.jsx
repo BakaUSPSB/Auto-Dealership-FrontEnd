@@ -132,7 +132,7 @@ const CarGallery = () => {
             {/* Category Checkboxes */}
             <Form.Group className="mb-3">
               <Form.Label>Body Type</Form.Label>
-              {["Sedan", "SUV", "Coupe", "Truck"].map((type) => (
+              {["Hatchback", "Sedan", "SUV", "Coupe", "Truck"].map((type) => (
                 <Form.Check
                   type="checkbox"
                   id={`body-type-${type}`}
