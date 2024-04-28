@@ -1,69 +1,84 @@
 import React, { useState } from "react";
-import { Card, Button, Modal } from "react-bootstrap";
+import { Card, Modal, Button } from "react-bootstrap";
 
-const CarCard = ({ vehicle, imageSrc, highlighted }) => {
-  // if there is a vehicle object, extract the year, make, model, and price otherwise set to empty string
-  vehicle = vehicle || {
-    year: "",
-    make: "",
-    model: "",
-    price: "",
-    transmission: "",
-    color: "",
-    miles: "",
-    mpg: "",
-    fuel_type: "",
-  };
+const CarCard = ({ vehicle, highlighted }) => {
+  // Initialize bodyType state
+  const [bodyType, setBodyType] = useState(null);
+
+  // Ensure bodyType is set once
+  if (!bodyType) {
+    const bodyTypes = ["sedan", "coupe", "suv", "hatchback", "pickup"];
+    const randomBodyType =
+      bodyTypes[Math.floor(Math.random() * bodyTypes.length)];
+    setBodyType(randomBodyType);
+  }
+
+  // Image source
+  const imageSrc = `${process.env.PUBLIC_URL}/cars/${bodyType}/${bodyType}.jpg`;
+
+  // Modal state
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // Card style
   const cardStyle = {
-    width: "250px", // Set a fixed width for the card
-    height: "300px", // Set a fixed height for the card
-    border: highlighted ? "2px solid blueviolet" : "2px solid transparent", // Conditionally apply border
-    display: "flex", // Use flex to control the layout of the card
-    flexDirection: "column", // Stack the text and button vertically
-    justifyContent: "space-between", // Distribute space evenly
+    width: "225px",
+    height: "300px",
+    margin: "0",
+    padding: "0",
+    position: "relative", // Added relative positioning
   };
 
+  // Overlay border style
+  const overlayBorderStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    border: highlighted ? "2px solid red" : "none", // Conditional border
+    pointerEvents: "none", // Ensure clicks pass through the overlay
+    borderRadius: "4px", // Adjust border radius if needed
+  };
+
+  // Card image style
   const cardImgStyle = {
-    flex: "1", // Ensure the image takes up available space within the card
-    height: "100%", // Set the height of the image to fill the card
-    width: "100%", // Set the width of the image to fill the card
-    objectFit: "cover", // Ensure the aspect ratio is maintained
+    height: "60%",
+    width: "100%",
+    objectFit: "cover",
   };
 
   return (
     <>
-      <Card style={cardStyle} className="mx-2">
-        <Card.Img variant="top" src={imageSrc} style={cardImgStyle} />
+      <Card style={cardStyle} className="mx-2" onClick={handleShow}>
+        <Card.Img
+          variant="top"
+          src={imageSrc}
+          alt={`${bodyType}_image`}
+          style={cardImgStyle}
+        />
+        {/* Overlay border */}
+        <div style={overlayBorderStyle} />
         <Card.Body>
           <Card.Text>
-            {vehicle.year + " " + vehicle.make + " " + vehicle.model}
+            {vehicle.year} {vehicle.make} {vehicle.model}
           </Card.Text>
           <Card.Text>{"$" + vehicle.price}</Card.Text>
-          <Button variant="primary" onClick={handleShow}>
-            Buy Now
-          </Button>
         </Card.Body>
       </Card>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Details</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ display: "flex", flexDirection: "row" }}>
-          <img
-            src={imageSrc}
-            alt=""
-            style={{ marginRight: "20px", width: "50%" }}
-          />
+        <Modal.Body>
+          <img src={imageSrc} alt={`${bodyType}_image`} style={cardImgStyle} />
           <div>
             <p>
               {vehicle.make} {vehicle.model}
             </p>
             <p>Color: {vehicle.color}</p>
-            <p>Year:{vehicle.year}</p>
+            <p>Year: {vehicle.year}</p>
             <p>${vehicle.price}</p>
             <p>Transmission: {vehicle.transmission}</p>
             <p>Miles: {vehicle.miles}</p>

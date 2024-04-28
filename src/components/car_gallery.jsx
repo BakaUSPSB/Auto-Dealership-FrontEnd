@@ -17,8 +17,7 @@ const CarGallery = () => {
         CarService.getVehicles(currentPage, itemsPerPage, searchQuery)
             .then((response) => {
                 const vehiclesWithImages = response.data.vehicles.map(vehicle => ({
-                    ...vehicle,
-                    image: getRandomImage(),
+                    ...vehicle
                 }));
                 setCars(vehiclesWithImages);
                 setTotalItems(response.data.num_of_results);
@@ -61,11 +60,10 @@ const CarGallery = () => {
     // Render placeholders if no cars are available
     const renderPlaceholders = () => {
         return Array.from({length: itemsPerPage}, (_, index) => (
-            <Col key={index} xs={12} sm={6} md={4} lg={3} xl={2} className="d-flex align-items-stretch">
+            <Col key={index}>
                 <Card style={{
-                    width: '250px',
-                    minWidth: '250px',
-                    height: '300px',
+                    width: '225px',
+                    height: '350px',
                     margin: '1rem',
                     backgroundColor: 'grey'
                 }}>
@@ -77,17 +75,13 @@ const CarGallery = () => {
         ));
     };
 
-    const getRandomImage = () => {
-        const randomNumber = Math.floor(Math.random() * 4) + 1; // generates a random number between 1 and 4
-        return `${process.env.PUBLIC_URL}/cars/${randomNumber}.jpg`; // returns the path to the random image
-    };
 
     return (
-        <Container fluid style={{margin: 0, padding: 0}} ref={containerRef}>
+        <Container id={"CarGallery"} fluid style={{margin: 0, padding: 0, border: 5, borderColor: "blueviolet"}} ref={containerRef}>
             <Row>
-                <Col md={3} style={{width: '300px', minWidth: '300px', backgroundColor: 'lightgray'}}>
+                <Col id={"FormCol"} md={1} style={{width: '275px', backgroundColor: 'lightgray'}}>
                     {/* Filter section */}
-                    <Form>
+                    <Form id={"VehicleSearchForm"}>
                         <Form.Group className="mb-3">
                             <Form.Label>Search</Form.Label>
                             <Form.Control type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}/>
@@ -152,7 +146,7 @@ const CarGallery = () => {
                     </Form>
                 </Col>
 
-                <Col>
+                <Col id={"GalleryCol"}>
                     {/* Gallery section */}
                     <Row>
                         {cars.length > 0 ? (
@@ -160,7 +154,6 @@ const CarGallery = () => {
                                 <CarCard
                                     key={index}
                                     vehicle={car}
-                                    imageSrc={car.image}
                                     highlighted={false}
                                 />
                             ))
