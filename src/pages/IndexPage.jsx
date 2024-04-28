@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Carousel from '../components/card_carousel'; // Update the path accordingly
+import Carousel from '../components/homepage/card_carousel'; // Update the path accordingly
 import Searchbar from "../components/search_bar";
-import CarGallery from "../components/car_gallery.jsx";
+import CarGallery from "../components/homepage/car_gallery.jsx";
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import VehiclesPage from "./VehiclesPage";
 

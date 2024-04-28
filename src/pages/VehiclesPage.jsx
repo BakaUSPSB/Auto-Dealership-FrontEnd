@@ -1,6 +1,6 @@
 import {Col, Container, Row} from "react-bootstrap";
 import React from "react";
-import CarGallery from "../components/car_gallery";
+import CarGallery from "../components/homepage/car_gallery";
 
 function VehiclesPage(){
     return(
