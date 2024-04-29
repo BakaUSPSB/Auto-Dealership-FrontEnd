@@ -1,29 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Button, Col } from 'react-bootstrap';
-import CarCard from './car_card.jsx'; // Updated import path
+import React, { useState, useEffect } from "react";
+import { Container, Row, Button, Col } from "react-bootstrap";
+import CarCard from "./car_card.jsx"; // Updated import path
+import top5Service from "../../services/top5Service.jsx";
 
 const CardCarousel = ({ highlightedIndex, setHighlightedIndex }) => {
   const [vehicles, setVehicles] = useState([]);
 
   useEffect(() => {
     // Fetch the data when the component mounts
-    fetch('https://expert-space-rotary-phone-4jqq474qjq5r37qq5-5000.app.github.dev/api/inventory/top-vehicles')
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
+    top5Service
+      .getTop5()
+      .then((data) => {
+        if (data.status === "success") {
           setVehicles(data.data);
         } else {
-          console.error('Failed to fetch top vehicles:', data.message);
+          console.error("Failed to fetch top vehicles:", data.message);
         }
       })
-      .catch(error => {
-        console.error('Error fetching top vehicles:', error);
+      .catch((error) => {
+        console.error("Error fetching top vehicles:", error);
       });
   }, []); // Empty dependency array ensures the effect runs only once when the component mounts
 
   // Navigate to the previous card
   const goToPrevCard = () => {
-    setHighlightedIndex((prevIndex) => (prevIndex - 1 + vehicles.length) % vehicles.length);
+    setHighlightedIndex(
+      (prevIndex) => (prevIndex - 1 + vehicles.length) % vehicles.length
+    );
   };
 
   // Navigate to the next card
@@ -37,27 +40,41 @@ const CardCarousel = ({ highlightedIndex, setHighlightedIndex }) => {
   };
 
   const buttonStyle = {
-    margin: '0 10px',
+    margin: "0 10px",
   };
 
   const cardWrapperStyle = {
-    width: 'fit-content', // Adjusted width to fit the content
-    height: 'fit-content', // Adjusted height to fit the content
-    margin: '0', // Removed margin
-    padding: '0', // Removed padding
+    width: "fit-content", // Adjusted width to fit the content
+    height: "fit-content", // Adjusted height to fit the content
+    margin: "0", // Removed margin
+    padding: "0", // Removed padding
   };
 
   return (
     <Container fluid id="card-carousel-container">
       <Row className="align-items-center justify-content-center" id="card-row">
         <Col xs={1} className="d-flex justify-content-center">
-          <Button id="previous-button" onClick={goToPrevCard} style={buttonStyle}>
+          <Button
+            id="previous-button"
+            onClick={goToPrevCard}
+            style={buttonStyle}
+          >
             &lt;
           </Button>
         </Col>
         {vehicles.map((vehicle, index) => (
-          <Col xs={2} key={index} id={`card-${index}`} style={cardWrapperStyle} onClick={() => handleCardClick(index)}>
-            <CarCard id={`car-card-${index}`} vehicle={vehicle} highlighted={index === highlightedIndex} />
+          <Col
+            xs={2}
+            key={index}
+            id={`card-${index}`}
+            style={cardWrapperStyle}
+            onClick={() => handleCardClick(index)}
+          >
+            <CarCard
+              id={`car-card-${index}`}
+              vehicle={vehicle}
+              highlighted={index === highlightedIndex}
+            />
           </Col>
         ))}
         <Col xs={1} className="d-flex justify-content-center">

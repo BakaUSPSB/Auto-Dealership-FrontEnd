@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import VehiclesPage from "./VehiclesPage";
 import CardCarousel from "../components/homepage/card_carousel";
+import top5Service from "../services/top5Service.jsx";
 
 const IndexPage = () => {
   const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -11,14 +12,9 @@ const IndexPage = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await fetch(
-          "https://b5g8mt0d-5000.use.devtunnels.ms/api/inventory/top-vehicles"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        const cars = data.data;
+        const response = await top5Service.getTop5();
+
+        const cars = response.data;
         if (cars.length > 0) {
           const highlightedCar = cars[highlightedIndex];
           if (highlightedCar) {
