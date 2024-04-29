@@ -1,10 +1,32 @@
 import React, { useState } from "react";
-import { Card, Modal, Button } from "react-bootstrap";
+import { Card, Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import negotiationService from "../../services/negotiationService";
 
 const CarCard = ({ vehicle, highlighted }) => {
   // Initialize bodyType state
+  const [offerPrice, setOfferPrice] = useState("");
   const [bodyType, setBodyType] = useState(null);
+  const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
 
+  const handleSubmitOffer = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    const response = await negotiationService.negotiation(
+      vehicle.vehicle_id,
+      offerPrice,
+      msg
+    );
+    if (response.code === 201) {
+      alert("Offer submitted successfully");
+    }
+
+    // Submit the offer...
+  };
   // Ensure bodyType is set once
   if (!bodyType) {
     const bodyTypes = ["sedan", "coupe", "suv", "hatchback", "pickup"];
@@ -83,9 +105,30 @@ const CarCard = ({ vehicle, highlighted }) => {
             <p>Transmission: {vehicle.transmission}</p>
             <p>Miles: {vehicle.miles}</p>
             <p>MPG: {vehicle.mpg}</p>
+            <Row>
+              <Col>
+                <Form.Control
+                  type="number"
+                  value={offerPrice}
+                  onChange={(e) => setOfferPrice(e.target.value)}
+                  placeholder="Offer Price"
+                />
+              </Col>
+              <Col>
+                <Form.Control
+                  type="text"
+                  value={msg}
+                  onChange={(e) => setMsg(e.target.value)}
+                  placeholder="Message"
+                />
+              </Col>
+            </Row>
           </div>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="primary" onClick={handleSubmitOffer}>
+            Submit Offer
+          </Button>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
