@@ -121,7 +121,7 @@ function TechDash() {
                                     <div key={index} style={{backgroundColor: 'lightgray'}}>
                                         <p><b>Service Type: </b> {service.name}</p>
                                         <p><b>Service Description: </b> {service.description}</p>
-                                        <p><b>Service Cost: </b> {service.price}</p>
+                                        <p><b>Service Cost: </b> ${service.price}</p>
                                     </div>
                                 ))}
                                 <p><b>Customer Note: </b> {selectedAppointment && selectedAppointment.service_ticket[0].customer_note}</p>
