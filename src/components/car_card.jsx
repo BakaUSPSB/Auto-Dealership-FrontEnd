@@ -34,21 +34,13 @@ const CarCard = ({ vehicle, imageSrc, highlighted }) => {
         textInput
       );
       if (response.code === 201) {
+        alert("Offer has been made");
       }
       if (response.code === 400) {
         alert("Offer has not been made");
       }
     } catch (error) {}
   };
-  //OLD
-  // const cardStyle = {
-  //   width: "250px", // Set a fixed width for the card
-  //   height: "300px", // Set a fixed height for the card
-  //   border: highlighted ? "2px solid blueviolet" : "2px solid transparent", // Conditionally apply border
-  //   display: "flex", // Use flex to control the layout of the card
-  //   flexDirection: "column", // Stack the text and button vertically
-  //   justifyContent: "space-between", // Distribute space evenly
-  // };
 
   const cardImgStyle = {
     flex: "1", // Ensure the image takes up available space within the card

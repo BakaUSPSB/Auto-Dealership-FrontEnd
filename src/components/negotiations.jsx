@@ -1,63 +1,158 @@
-import React, { useState } from 'react';
-import { Table, Button } from 'react-bootstrap'; // Import React Bootstrap components
+import React, { useState, useEffect } from "react";
+import { Table, Button, Modal } from "react-bootstrap";
+import NegotiationDetails from "./negotiationDetails";
+import userNegotiationService from "../services/userNegotiationService";
+import negotiationService from "../services/negotiationService";
+import CounterOffer from "./counterOffer";
 
 const NegotiationTable = () => {
-  const initialNegotiations = [
-    { id: 1, firstName: 'Jon', lastName: 'Snow', counterOffer: 45000, offer: '' },
-    { id: 2, firstName: 'Cersei', lastName: 'Lannister', counterOffer: 60000, offer: '' },
-    // Add more rows as needed
-  ];
+  const [negotiations, setNegotiations] = useState([]);
+  const [role, setRole] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNegotiation, setSelectedNegotiation] = useState(null); // Separate state for selected negotiation details
 
-  const [negotiations, setNegotiations] = useState(initialNegotiations);
+  useEffect(() => {
+    const fetchNegotiations = () => {
+      const role = localStorage.getItem("role");
+      setRole(role);
+      const service =
+        role === "customer" ? negotiationService : userNegotiationService;
 
-  const handleOfferChange = (id, value) => {
-    setNegotiations((prevNegotiations) =>
-      prevNegotiations.map((negotiation) =>
-        negotiation.id === id ? { ...negotiation, offer: value } : negotiation
-      )
-    );
+      service
+        .negotiations()
+        .then((response) => {
+          if (response.code === 200) {
+            setNegotiations(response.data.negotiations);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching negotiations:", error);
+        });
+    };
+
+    fetchNegotiations();
+  }, []);
+
+  const handleShowModal = (negotiation) => {
+    setShowModal(true);
+    setSelectedNegotiation(negotiation); // Set the selected negotiation
   };
 
-  const handleRowSubmit = (id) => {
-    console.log(`Negotiation ID ${id} offer submitted: ${negotiations.find((n) => n.id === id).offer}`);
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedNegotiation(null); // Reset the selected negotiation
   };
 
   return (
-    <Table striped bordered hover responsive>
-      <thead>
-        <tr>
-          <th>Negotiation ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Counter Offer</th>
-          <th>Your Offer</th>
-          <th>Submit</th>
-        </tr>
-      </thead>
-      <tbody>
-        {negotiations.map((negotiation) => (
-          <tr key={negotiation.id}>
-            <td>{negotiation.id}</td>
-            <td>{negotiation.firstName}</td>
-            <td>{negotiation.lastName}</td>
-            <td>${negotiation.counterOffer}</td>
-            <td>
-              <input
-                type="text"
-                className="form-control"
-                value={negotiation.offer}
-                onChange={(e) => handleOfferChange(negotiation.id, e.target.value)}
-              />
-            </td>
-            <td>
-              <Button variant="primary" onClick={() => handleRowSubmit(negotiation.id)}>
-                Submit
+    <>
+      {role === "customer" ? (
+        <div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Offer</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(negotiations) &&
+                negotiations.map((negotiation) => (
+                  <tr key={negotiation.negotiation_id}>
+                    <td>{`${negotiation.vehicle.make} ${negotiation.vehicle.model} ${negotiation.vehicle.year}`}</td>
+                    <td>${negotiation.current_offer}</td>
+                    <td>{negotiation.negotiation_status}</td>
+                    <td>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleShowModal(negotiation)}
+                      >
+                        View Details
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+          <Modal show={showModal} onHide={handleCloseModal} size="lg">
+            <Modal.Header closeButton>
+              <Modal.Title>Negotiation Details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {selectedNegotiation && (
+                <NegotiationDetails
+                  negotiationId={selectedNegotiation.negotiation_id}
+                />
+              )}
+            </Modal.Body>
+            <Modal.Footer>
+              {selectedNegotiation && (
+                <CounterOffer
+                  negotiation_id={selectedNegotiation.negotiation_id}
+                />
+              )}
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
               </Button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      ) : (
+        <div>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Offer</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(negotiations) &&
+                negotiations.map((negotiation) => (
+                  <tr key={negotiation.negotiation_id}>
+                    <td>{`${negotiation.vehicle.make} ${negotiation.vehicle.model} ${negotiation.vehicle.year}`}</td>
+                    <td>${negotiation.current_offer}</td>
+                    <td>{negotiation.negotiation_status}</td>
+                    <td>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleShowModal(negotiation)}
+                      >
+                        View Details
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+          <Modal show={showModal} onHide={handleCloseModal} size="lg">
+            <Modal.Header closeButton>
+              <Modal.Title>Negotiation Details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {selectedNegotiation && (
+                <NegotiationDetails
+                  negotiationId={selectedNegotiation.negotiation_id}
+                />
+              )}
+            </Modal.Body>
+            <Modal.Footer>
+              {selectedNegotiation && (
+                <CounterOffer
+                  negotiation_id={selectedNegotiation.negotiation_id}
+                />
+              )}
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
+      )}
+    </>
   );
 };
 
