@@ -4,9 +4,20 @@ import { useNavigate } from "react-router-dom";
 import negotiationService from "../../services/negotiationService";
 
 const CarCard = ({ vehicle, highlighted }) => {
-  // Initialize bodyType state
+  // Initialize body_type state
+    vehicle = vehicle || {
+    body_type: "",
+    year: "",
+    make: "",
+    model: "",
+    price: "",
+    transmission: "",
+    color: "",
+    miles: "",
+    mpg: "",
+    fuel_type: "",
+  };
   const [offerPrice, setOfferPrice] = useState("");
-  const [bodyType, setBodyType] = useState(null);
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
@@ -24,19 +35,12 @@ const CarCard = ({ vehicle, highlighted }) => {
     if (response.code === 201) {
       alert("Offer submitted successfully");
     }
-
     // Submit the offer...
   };
-  // Ensure bodyType is set once
-  if (!bodyType) {
-    const bodyTypes = ["sedan", "coupe", "suv", "hatchback", "pickup"];
-    const randomBodyType =
-      bodyTypes[Math.floor(Math.random() * bodyTypes.length)];
-    setBodyType(randomBodyType);
-  }
+  // Ensure body_type is set once
 
   // Image source
-  const imageSrc = `${process.env.PUBLIC_URL}/cars/${bodyType}/${bodyType}.jpg`;
+  const imageSrc = `${process.env.PUBLIC_URL}/cars/${vehicle.body_type}/${vehicle.body_type}.jpg`;
 
   // Modal state
   const [show, setShow] = useState(false);
@@ -77,7 +81,7 @@ const CarCard = ({ vehicle, highlighted }) => {
         <Card.Img
           variant="top"
           src={imageSrc}
-          alt={`${bodyType}_image`}
+          alt={`${vehicle.body_type}_image`}
           style={cardImgStyle}
         />
         {/* Overlay border */}
@@ -94,11 +98,12 @@ const CarCard = ({ vehicle, highlighted }) => {
           <Modal.Title>Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <img src={imageSrc} alt={`${bodyType}_image`} style={cardImgStyle} />
+          <img src={imageSrc} alt={`${vehicle.body_type}_image`} style={cardImgStyle} />
           <div>
             <p>
               {vehicle.make} {vehicle.model}
             </p>
+            <p>Body Type: {vehicle.body_type}</p>
             <p>Color: {vehicle.color}</p>
             <p>Year: {vehicle.year}</p>
             <p>${vehicle.price}</p>
@@ -108,18 +113,18 @@ const CarCard = ({ vehicle, highlighted }) => {
             <Row>
               <Col>
                 <Form.Control
-                  type="number"
-                  value={offerPrice}
-                  onChange={(e) => setOfferPrice(e.target.value)}
-                  placeholder="Offer Price"
+                    type="number"
+                    value={offerPrice}
+                    onChange={(e) => setOfferPrice(e.target.value)}
+                    placeholder="Offer Price"
                 />
               </Col>
               <Col>
                 <Form.Control
-                  type="text"
-                  value={msg}
-                  onChange={(e) => setMsg(e.target.value)}
-                  placeholder="Message"
+                    type="text"
+                    value={msg}
+                    onChange={(e) => setMsg(e.target.value)}
+                    placeholder="Message"
                 />
               </Col>
             </Row>
