@@ -32,9 +32,9 @@ const CardCarousel = () => {
       <div className="highlighted-image-container">
         {vehicles.length > 0 && (
           <Image
-            src={`${process.env.PUBLIC_URL}/cars/${vehicles[highlightedIndex].body_type}/${vehicles[highlightedIndex].body_type}.jpg`}
+            src={`${process.env.PUBLIC_URL}/cars/${vehicles[highlightedIndex].body_type.toLowerCase()}/${vehicles[highlightedIndex].body_type.toLowerCase()}.jpg`}
             fluid
-                        style={{
+            style={{
               ...highlightedImageStyle,
             }}
             className="highlighted-vehicle-image"
@@ -91,4 +91,3 @@ const CardCarousel = () => {
 };
 
 export default CardCarousel;
-
