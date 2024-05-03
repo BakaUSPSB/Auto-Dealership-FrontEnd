@@ -85,8 +85,9 @@ function TechDash() {
                             <tr>
                                 <th>Appointment Status</th>
                                 <th>Service Time</th>
-                                <th>Customer ID</th>
+                                <th>Customer Notes</th>
                                 <th>Technician ID</th>
+                                <th>Service Status</th>
                                 <th>Technician Notes</th>
                                 <th>Action</th>
                             </tr>
@@ -95,11 +96,16 @@ function TechDash() {
                             <tr key={appointments.appointment_id}>
                                 <td>{appointments.status}</td>
                                 <td>{appointments.time_slot.properties.start_time}</td>
-                                <td>{appointments.customer.properties.customer_id}</td>
+                                <td>{appointments.service_ticket[0].customer_note}</td>
                                 <td>{appointments.service_ticket[0].user_id}</td>
+                                <td>
+                                    {appointments.status === 'CONFIRMED' ? appointments.service_ticket[0].status : 'Waiting for Confirmation...'}
+                                </td>
                                 <td>{appointments.service_ticket[0].technician_note}</td>
                                 <td>
+                                    {appointments.status === 'CONFIRMED' &&
                                     <Button variant="primary" onClick={() => handleShowModal(appointments)}>View Ticket</Button>
+                                    }
                                 </td>
                             </tr>
                             ))}
