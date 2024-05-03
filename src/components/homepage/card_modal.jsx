@@ -22,6 +22,8 @@ const CarModal = ({ vehicle, show, handleClose }) => {
     }
   };
 
+  const isOfferPriceEntered = offerPrice.trim() !== ""; // Check if offer price is entered
+
   return (
     <>
       <style>{`
@@ -40,12 +42,12 @@ const CarModal = ({ vehicle, show, handleClose }) => {
         }
 
         #makeLabel, #modelLabel, #bodyTypeLabel, #colorLabel, #yearLabel,
-        #priceLabel, #transmissionLabel, #milesLabel, #mpgLabel {
-          /* Add custom styles for table labels */
+        #priceLabel, #transmissionLabel, #milesLabel, #mpgLabel, #fuelLabel {
+          font-weight: bold;
         }
 
         #makeValue, #modelValue, #bodyTypeValue, #colorValue, #yearValue,
-        #priceValue, #transmissionValue, #milesValue, #mpgValue {
+        #priceValue, #transmissionValue, #milesValue, #mpgValue, #fuelValue {
           /* Add custom styles for table values */
         }
 
@@ -115,6 +117,10 @@ const CarModal = ({ vehicle, show, handleClose }) => {
                     <td id="mpgLabel">MPG</td>
                     <td id="mpgValue">{vehicle.mpg}</td>
                   </tr>
+                  <tr>
+                    <td id="fuelLabel">Fuel</td>
+                    <td id="fuelValue">{vehicle.fuel_type}</td>
+                  </tr>
                 </tbody>
               </Table>
               <Form>
@@ -124,7 +130,7 @@ const CarModal = ({ vehicle, show, handleClose }) => {
                       type="number"
                       value={offerPrice}
                       onChange={(e) => setOfferPrice(e.target.value)}
-                      placeholder="Offer Price"
+                      placeholder="Enter An Offer Price"
                       id="offerPriceInput"
                     />
                   </Col>
@@ -133,7 +139,7 @@ const CarModal = ({ vehicle, show, handleClose }) => {
                       type="text"
                       value={msg}
                       onChange={(e) => setMsg(e.target.value)}
-                      placeholder="Message"
+                      placeholder="Message (Optional)"
                       id="messageInput"
                     />
                   </Col>
@@ -143,9 +149,11 @@ const CarModal = ({ vehicle, show, handleClose }) => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleSubmitOffer} id="submitOfferButton">
-            Submit Offer
-          </Button>
+          {isOfferPriceEntered && ( // Only render if offer price is entered
+            <Button variant="primary" onClick={handleSubmitOffer} id="submitOfferButton">
+              Submit Offer
+            </Button>
+          )}
           <Button variant="secondary" onClick={handleClose} id="closeButton">
             Close
           </Button>
