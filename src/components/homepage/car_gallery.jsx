@@ -18,7 +18,6 @@ const CarGallery = () => {
       .then((response) => {
         const vehiclesWithImages = response.data.vehicles.map((vehicle) => ({
           ...vehicle,
-          image: getRandomImage(),
         }));
         setCars(vehiclesWithImages);
         setTotalItems(response.data.num_of_results);
