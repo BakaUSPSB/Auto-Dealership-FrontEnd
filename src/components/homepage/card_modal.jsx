@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col, Table } from "react-bootstrap";
 import negotiationService from "../../services/negotiationService";
 
 const CarModal = ({ vehicle, show, handleClose }) => {
@@ -23,56 +23,135 @@ const CarModal = ({ vehicle, show, handleClose }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Details</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <img
-          src={`${process.env.PUBLIC_URL}/cars/${vehicle.body_type}/${vehicle.body_type}.jpg`}
-          alt={`${vehicle.body_type}_image`}
-          style={{ height: "60%", width: "100%", objectFit: "cover" }}
-        />
-        <div>
-          <p>
-            {vehicle.make} {vehicle.model}
-          </p>
-          <p>Body Type: {vehicle.body_type}</p>
-          <p>Color: {vehicle.color}</p>
-          <p>Year: {vehicle.year}</p>
-          <p>${vehicle.price}</p>
-          <p>Transmission: {vehicle.transmission}</p>
-          <p>Miles: {vehicle.miles}</p>
-          <p>MPG: {vehicle.mpg}</p>
+    <>
+      <style>{`
+        .custom-modal {
+          max-width: 75% !important; /* Set the maximum width of the modal to 75% of the viewport */
+        }
+
+        #carModalTitle {
+          /* Add custom styles for modal title */
+        }
+
+        #carImage {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+
+        #makeLabel, #modelLabel, #bodyTypeLabel, #colorLabel, #yearLabel,
+        #priceLabel, #transmissionLabel, #milesLabel, #mpgLabel {
+          /* Add custom styles for table labels */
+        }
+
+        #makeValue, #modelValue, #bodyTypeValue, #colorValue, #yearValue,
+        #priceValue, #transmissionValue, #milesValue, #mpgValue {
+          /* Add custom styles for table values */
+        }
+
+        #offerPriceInput, #messageInput {
+          /* Add custom styles for form inputs */
+        }
+
+        #submitOfferButton, #closeButton {
+          /* Add custom styles for buttons */
+        }
+      `}</style>
+
+      <Modal
+        show={show}
+        onHide={handleClose} // Close modal if user clicks outside
+        dialogClassName="custom-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="carModalTitle">Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <Row>
-            <Col>
-              <Form.Control
-                type="number"
-                value={offerPrice}
-                onChange={(e) => setOfferPrice(e.target.value)}
-                placeholder="Offer Price"
+            <Col md={6}>
+              <img
+                src={`${process.env.PUBLIC_URL}/cars/${vehicle.body_type}/${vehicle.body_type}.jpg`}
+                alt={`${vehicle.body_type}_image`}
+                style={{ height: "100%", width: "100%", objectFit: "contain" }}
+                id="carImage"
               />
             </Col>
-            <Col>
-              <Form.Control
-                type="text"
-                value={msg}
-                onChange={(e) => setMsg(e.target.value)}
-                placeholder="Message"
-              />
+            <Col md={6}>
+              <Table bordered>
+                <tbody>
+                  <tr>
+                    <td id="makeLabel">Make</td>
+                    <td id="makeValue">{vehicle.make}</td>
+                  </tr>
+                  <tr>
+                    <td id="modelLabel">Model</td>
+                    <td id="modelValue">{vehicle.model}</td>
+                  </tr>
+                  <tr>
+                    <td id="bodyTypeLabel">Body Type</td>
+                    <td id="bodyTypeValue">{vehicle.body_type}</td>
+                  </tr>
+                  <tr>
+                    <td id="colorLabel">Color</td>
+                    <td id="colorValue">{vehicle.color}</td>
+                  </tr>
+                  <tr>
+                    <td id="yearLabel">Year</td>
+                    <td id="yearValue">{vehicle.year}</td>
+                  </tr>
+                  <tr>
+                    <td id="priceLabel">Price</td>
+                    <td id="priceValue">${vehicle.price}</td>
+                  </tr>
+                  <tr>
+                    <td id="transmissionLabel">Transmission</td>
+                    <td id="transmissionValue">{vehicle.transmission}</td>
+                  </tr>
+                  <tr>
+                    <td id="milesLabel">Miles</td>
+                    <td id="milesValue">{vehicle.miles}</td>
+                  </tr>
+                  <tr>
+                    <td id="mpgLabel">MPG</td>
+                    <td id="mpgValue">{vehicle.mpg}</td>
+                  </tr>
+                </tbody>
+              </Table>
+              <Form>
+                <Row>
+                  <Col>
+                    <Form.Control
+                      type="number"
+                      value={offerPrice}
+                      onChange={(e) => setOfferPrice(e.target.value)}
+                      placeholder="Offer Price"
+                      id="offerPriceInput"
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      type="text"
+                      value={msg}
+                      onChange={(e) => setMsg(e.target.value)}
+                      placeholder="Message"
+                      id="messageInput"
+                    />
+                  </Col>
+                </Row>
+              </Form>
             </Col>
           </Row>
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary" onClick={handleSubmitOffer}>
-          Submit Offer
-        </Button>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleSubmitOffer} id="submitOfferButton">
+            Submit Offer
+          </Button>
+          <Button variant="secondary" onClick={handleClose} id="closeButton">
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
