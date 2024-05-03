@@ -1,1 +1,1 @@
-export const API_ROOT_URL = "https://b5g8mt0d-5000.use.devtunnels.ms/api";
+export const API_ROOT_URL = "https://laughing-goggles-9766v9v69p9x37q96-5000.app.github.dev/api";
