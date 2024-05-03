@@ -99,7 +99,8 @@ function TechDash() {
                                 <td>{appointments.service_ticket[0].customer_note}</td>
                                 <td>{appointments.service_ticket[0].user_id}</td>
                                 <td>
-                                    {appointments.status === 'CONFIRMED' ? appointments.service_ticket[0].status : 'Waiting for Confirmation...'}
+                                    {appointments.status === 'CANCELLED' ? 'CANCELLED' :
+                                    (appointments.status === 'CONFIRMED' ? appointments.service_ticket[0].status : 'Waiting for Confirmation...')}
                                 </td>
                                 <td>{appointments.service_ticket[0].technician_note}</td>
                                 <td>
