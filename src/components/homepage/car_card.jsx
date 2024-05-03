@@ -38,7 +38,7 @@ const CarCard = ({ vehicle, highlighted }) => {
       <Card style={cardStyle} className="mx-2" onClick={handleShowModal}>
         <Card.Img
           variant="top"
-          src={`${process.env.PUBLIC_URL}/cars/${vehicle.body_type}/${vehicle.body_type}.jpg`}
+          src={`${process.env.PUBLIC_URL}/cars/${vehicle.body_type.toLowerCase()}/${vehicle.body_type.toLowerCase()}.jpg`}
           alt={`${vehicle.body_type}_image`}
           style={cardImgStyle}
         />
