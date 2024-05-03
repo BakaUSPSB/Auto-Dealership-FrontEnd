@@ -89,11 +89,6 @@ const CarGallery = () => {
     ));
   };
 
-  const getRandomImage = () => {
-    const randomNumber = Math.floor(Math.random() * 4) + 1; // generates a random number between 1 and 4
-    return `${process.env.PUBLIC_URL}/cars/${randomNumber}.jpg`; // returns the path to the random image
-  };
-
   return (
     <Container fluid style={{ margin: 0, padding: 0 }} ref={containerRef}>
       <Row>
