@@ -121,6 +121,7 @@ function TechDash() {
                             <p><b>End Time: </b> {selectedAppointment && selectedAppointment.time_slot.properties.end_time}</p>
                             <p><b>Customer ID: </b> {selectedAppointment && selectedAppointment.customer.properties.customer_id}</p>
                             <p><b>Customer Name: </b> {selectedAppointment && selectedAppointment.customer.properties.first_name} {selectedAppointment && selectedAppointment.customer.properties.last_name}</p>
+                            <p><b>Vehicle: </b> {selectedAppointment && selectedAppointment.service_ticket[0].vehicle}</p>
                             <p><b>Ticket Status: </b> {selectedAppointment && selectedAppointment.service_ticket[0].status}</p>
                             {selectedAppointment && selectedAppointment.service_ticket.map((ticket, index) => (
                                 <div key={index}>
