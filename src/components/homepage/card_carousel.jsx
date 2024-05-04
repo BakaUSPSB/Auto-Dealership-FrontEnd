@@ -8,11 +8,12 @@ const CardCarousel = () => {
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const highlightedImageStyle = {
     width: "100%",
-    height: "60vh",
+    height: "75vh",
     objectFit: "cover",
     margin: 0,
     padding: 0,
   };
+
   useEffect(() => {
     top5Service.getTop5()
       .then((response) => {
@@ -27,6 +28,11 @@ const CardCarousel = () => {
       });
   }, []);
 
+  const handleHighlightedImageClick = () => {
+    // Trigger the onClick event for the respective CarCard
+    setHighlightedIndex((prevIndex) => (prevIndex + 1) % vehicles.length);
+  };
+
   return (
     <div className="carousel-container">
       <div className="highlighted-image-container">
@@ -34,14 +40,13 @@ const CardCarousel = () => {
           <Image
             src={`${process.env.PUBLIC_URL}/cars/${vehicles[highlightedIndex].body_type.toLowerCase()}/${vehicles[highlightedIndex].body_type.toLowerCase()}.jpg`}
             fluid
-            style={{
-              ...highlightedImageStyle,
-            }}
+            style={highlightedImageStyle}
             className="highlighted-vehicle-image"
+            onClick={handleHighlightedImageClick} // Attach onClick handler to the Image
           />
         )}
       </div>
-      <Container fluid id="card-carousel-container">
+      <Container fluid id="card-carousel-container" style={{ padding: 10 }}>
         <Row className="align-items-center justify-content-center" id="button-and-card-row">
           <Col xs={1} className="d-flex justify-content-center" id="previous-button-column">
             <Button
