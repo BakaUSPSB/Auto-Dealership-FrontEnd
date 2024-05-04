@@ -167,7 +167,7 @@ const CarGallery = () => {
                     </Form>
                 </Col>
 
-                <Col>
+                <Col style={{padding: 30}}>
                     <Row>
                         {cars.length > 0
                             ? cars.map((car, index) => (

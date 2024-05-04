@@ -11,9 +11,9 @@ const CarCard = ({ vehicle, highlighted }) => {
   const cardStyle = {
     width: "225px",
     height: "300px",
-    margin: "0",
-    padding: "0",
     position: "relative",
+    margin: 10,
+    padding: 0,
   };
 
   const overlayBorderStyle = {
@@ -30,30 +30,35 @@ const CarCard = ({ vehicle, highlighted }) => {
   const cardImgStyle = {
     height: "60%",
     width: "100%",
+    margin: 0,
     objectFit: "cover",
   };
 
   return (
     <>
-      <Card style={cardStyle} className="mx-2" onClick={handleShowModal}>
+      <Card style={cardStyle} className="mx-2" onClick={handleShowModal} id={`car-card-${vehicle.vehicle_id}`}>
         <Card.Img
           variant="top"
           src={`${process.env.PUBLIC_URL}/cars/${vehicle.body_type.toLowerCase()}/${vehicle.body_type.toLowerCase()}.jpg`}
           alt={`${vehicle.body_type}_image`}
           style={cardImgStyle}
+          id={`car-card-img-${vehicle.vehicle_id}`}
         />
-        <div style={overlayBorderStyle} />
-        <Card.Body>
-          <Card.Text>
+        <div style={overlayBorderStyle} id={`car-card-overlay-${vehicle.vehicle_id}`} />
+        <Card.Body id={`car-card-body-${vehicle.vehicle_id}`}>
+          <Card.Text id={`car-card-text-${vehicle.vehicle_id}`}>
             {vehicle.year} {vehicle.make} {vehicle.model}
           </Card.Text>
-          <Card.Text>{"$" + vehicle.price}</Card.Text>
+          <Card.Text id={`car-card-price-${vehicle.vehicle_id}`}>
+            {"$" + vehicle.price}
+          </Card.Text>
         </Card.Body>
       </Card>
       <CarModal
         vehicle={vehicle}
         show={showModal}
         handleClose={handleCloseModal}
+        id={`car-modal-${vehicle.vehicle_id}`}
       />
     </>
   );
