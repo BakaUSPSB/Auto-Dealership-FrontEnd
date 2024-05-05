@@ -58,7 +58,7 @@ function AppContent() {
 
   return (
     <div className="bg-gray">
-      <Navbar bg="dark" variant="dark" expand="lg">
+      <Navbar style={{backgroundColor: "#000000"}} variant="dark" expand="lg">
         <Container>
           <Navbar.Brand as={Link} to="/">
             Wheels4Stealz

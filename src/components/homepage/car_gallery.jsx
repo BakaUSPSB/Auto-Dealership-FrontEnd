@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Pagination, Card } from "react-bootstrap";
-import CarCard from "./car_card";
+import CarCard from "./car_card"; // Update import
 import CarService from "../../services/CarService";
 
 const CarGallery = () => {
@@ -18,7 +18,6 @@ const CarGallery = () => {
     fuelType: true
   });
   const containerRef = React.useRef(null);
-  //console.log(selectedFilters)
 
   useEffect(() => {
     CarService.getVehicles(currentPage, itemsPerPage, searchQuery, selectedFilters)
@@ -101,7 +100,6 @@ const CarGallery = () => {
               id={`${group}-${option}`}
               label={option}
               name={group} // Assign the same name to all radio buttons in the group
-              // onChange={() => console.log({...selectedFilters, [group]: option})}
               onChange={() => setSelectedFilters({ ...selectedFilters, [group]: option })}
             />
           ))
@@ -111,7 +109,6 @@ const CarGallery = () => {
           <Button type={"button"} onClick={() => {
             document.getElementById(`${group}-${selectedFilters[group]}`).checked = false
             setSelectedFilters({ ...selectedFilters, [group]: null })
-
           }} id={`clear-filter-${group}`}>
             Clear {title}
           </Button>
@@ -135,14 +132,13 @@ const CarGallery = () => {
   }
 
   return (
-    <Container fluid ref={containerRef} id="car-gallery-container" >
+    <Container fluid ref={containerRef} id="car-gallery-container">
       <Row id="car-vehicle-label-row" style={{backgroundColor: "lightgray", borderTopLeftRadius: '8px', borderTopRightRadius: '8px'}}>
-        <h1 style={{textAlign: 'center'}}>
+        <h1 style={{textAlign: 'center', padding: 10}}>
           Vehicles
         </h1>
       </Row>
-      <Row id="car-gallery-row"
-           style={{backgroundImage: `url(${process.env.PUBLIC_URL}/assets/material.jpg)`,  borderRadius: '8px'}}>
+      <Row id="car-gallery-row" style={{ backgroundColor: "lightgray"}}>
         <Col md={3} style={{ width: "300px", minWidth: "300px", backgroundColor: "lightgray" }} id="sidebar-col">
           <Form id="filter-form">
             <Form.Group className="mb-3" id="search-form-group">
@@ -178,20 +174,19 @@ const CarGallery = () => {
         </Col>
 
         <Col id="main-content-col">
-          <Row id="car-card-row">
+          <Row id="car-card-row" style={{borderTopLeftRadius: '8px', backgroundImage: `url(${process.env.PUBLIC_URL}/assets/material.jpg)`, paddingTop: 10, paddingLeft: 10, borderBottomLeftRadius: 8}}>
             {cars.length > 0
               ? cars.map((car, index) => (
                 <CarCard
                   key={index}
                   vehicle={car}
-                  imageSrc={car.image}
                   highlighted={false}
                   id={`car-card-${index}`}
                 />
               ))
               : renderPlaceholders()}
           </Row>
-          <Pagination className="justify-content-center" id="pagination">
+          <Pagination className="justify-content-center" id="pagination" style={{paddingTop: 15}}>
             {paginationItems}
           </Pagination>
         </Col>
