@@ -46,7 +46,6 @@ function App() {
         </Router>
     );
 }
-
 function AppContent() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -70,20 +69,17 @@ function AppContent() {
                             <Nav.Link as={Link} to="/">
                                 Home
                             </Nav.Link>
-
                             <Nav.Link as={Link} to="/service">
                                 Service
                             </Nav.Link>
                             {localStorage.getItem("token") ? (
-                                <Nav.Link onClick={handleLogout}> Logout</Nav.Link>
+                                <>
+                                    <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                                    <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
+                                </>
                             ) : (
-                                <Nav.Link as={Link} to="/login">
-                                    Login
-                                </Nav.Link>
+                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
                             )}
-                            <Nav.Link as={Link} to="/dashboard">
-                                Dashboard
-                            </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
@@ -97,9 +93,9 @@ function AppContent() {
                 <Route path="/purchase/:vehicle_id" element={<PurchasePage/>}/>
                 {/* Define other routes here */}
             </Routes>
-
         </div>
     );
 }
+
 
 export default App;

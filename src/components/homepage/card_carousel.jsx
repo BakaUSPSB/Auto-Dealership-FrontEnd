@@ -10,7 +10,7 @@ const CardCarousel = () => {
     const highlightedImageStyle = {
         width: "100vw",
         height: "65vh",
-        objectFit: "cover",
+        objectFit: "cover"
     };
 
     const timerRef = useRef(null);

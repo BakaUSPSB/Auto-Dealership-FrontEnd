@@ -32,9 +32,15 @@ const PurchasePage = () => {
 
     return (
         <>
-            <h2>Welcome {firstName}</h2>
-            <p></p>
-            <PurchaseComponent vehicle={vehicle}/>
+            <div style={{
+                paddingTop: 50,
+                paddingBottom: 50,
+                backgroundImage: `url(${process.env.PUBLIC_URL}/assets/blur.jpg)`, // Use url() function to specify the image URL
+                backgroundSize: 'cover', // Adjust background size as needed
+                backgroundPosition: 'center', // Adjust background position as needed
+            }}>
+                <PurchaseComponent vehicle={vehicle}/>
+            </div>
         </>
     );
 };
