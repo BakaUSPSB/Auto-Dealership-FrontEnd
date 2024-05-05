@@ -1,32 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
-import axios from 'axios';
-import { API_ROOT_URL } from '../configs';
+import ManagerServices from '../services/managerServices';  // Import your Manager Services
 
 const MonthlySalesReport = () => {
   const [allSalesData, setAllSalesData] = useState([]);
   const [salesData, setSalesData] = useState([]);
-  const [totalSales, setTotalSales] = useState(0);  // State to store the total of filtered sales
+  const [totalSales, setTotalSales] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [selectedSale, setSelectedSale] = useState(null);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 
+  useEffect(() => {
+    fetchSalesData();
+  }, [year, month]);
+
   const fetchSalesData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      const response = await axios.get(`${API_ROOT_URL}/user/purchases_with_dates`, config);
-      setAllSalesData(response.data.data.purchases);
-      filterData(response.data.data.purchases);
+      const data = await ManagerServices.fetchSalesData();
+      if (data && data.data && data.data.purchases) { // Adjusting the path to access purchases correctly
+        setAllSalesData(data.data.purchases);
+        filterData(data.data.purchases);
+      } else {
+        console.log('No data or incorrect data format received:', data);
+      }
     } catch (error) {
       console.error('Error fetching sales data:', error);
+      if (error.response) {
+        console.error('Detailed error:', error.response.data); // Log detailed error response
+      }
     }
   };
+  
+  
 
   const filterData = (data) => {
     const filteredData = data.filter(sale => {
@@ -34,18 +40,9 @@ const MonthlySalesReport = () => {
       return saleDate.getFullYear() === year && saleDate.getMonth() + 1 === month;
     });
     setSalesData(filteredData);
-    // Calculate and set the total of the filtered sales
     const total = filteredData.reduce((sum, sale) => sum + parseFloat(sale.purchase_total), 0);
     setTotalSales(total);
   };
-
-  useEffect(() => {
-    fetchSalesData();
-  }, []);
-
-  useEffect(() => {
-    filterData(allSalesData); // Re-filter whenever year or month changes
-  }, [year, month]);
 
   const handleShowModal = (sale) => {
     setSelectedSale(sale);
