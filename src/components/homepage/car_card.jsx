@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {Card} from "react-bootstrap";
-import styled, {keyframes, css} from "styled-components"; // Import keyframes helper
+import React, { useState } from "react";
+import { Card } from "react-bootstrap";
+import styled, { keyframes, css } from "styled-components"; // Import keyframes helper
 import CarModal from "./card_modal"; // Import CarModal component
 
 // Define keyframes using the keyframes helper
@@ -18,16 +18,21 @@ const borderLoop = keyframes`
 
 // Styled Card component with animation
 const StyledCard = styled(Card)`
-    animation: ${({highlighted}) =>
-            highlighted
-                    ? css`
-                        ${borderLoop} 2s infinite
-                    `
-                    : "none"}; /* Apply animation */
+    animation: ${({ highlighted, isHovered }) =>
+        isHovered
+            ? css`
+                  ${borderLoop} 2s infinite
+              `
+            : highlighted
+            ? css`
+                  ${borderLoop} 2s infinite
+              `
+            : "none"}; /* Apply animation */
 `;
 
-const CarCard = ({vehicle, highlighted}) => {
+const CarCard = ({ vehicle, highlighted }) => {
     const [showModal, setShowModal] = useState(false);
+    const [isHovered, setIsHovered] = useState(false); // State to track hover state
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
@@ -39,8 +44,9 @@ const CarCard = ({vehicle, highlighted}) => {
         margin: 10,
         padding: 0,
         borderWidth: 2,
-        borderColor: '#1c1c1c',
-        borderRadius: 8
+        borderColor: "#1c1c1c",
+        borderRadius: 8,
+        boxShadow: isHovered ? "0px 0px 15px rgba(0, 0, 0, 0.3)" : "none", // Add shadow when hovered
     };
 
     const cardImgStyle = {
@@ -49,7 +55,15 @@ const CarCard = ({vehicle, highlighted}) => {
         margin: 0,
         objectFit: "cover",
         borderTopRightRadius: 5,
-        borderTopLeftRadius: 5
+        borderTopLeftRadius: 5,
+    };
+
+    const handleCardMouseEnter = () => {
+        setIsHovered(true); // Set hover state to true
+    };
+
+    const handleCardMouseLeave = () => {
+        setIsHovered(false); // Set hover state to false
     };
 
     return (
@@ -60,7 +74,10 @@ const CarCard = ({vehicle, highlighted}) => {
                     className="mx-2"
                     onClick={handleShowModal}
                     highlighted={highlighted} // Pass highlighted prop to styled component
+                    isHovered={isHovered} // Pass isHovered prop to styled component
                     id={`car-card-${vehicle.vehicle_id}`}
+                    onMouseEnter={handleCardMouseEnter} // Set onMouseEnter event handler
+                    onMouseLeave={handleCardMouseLeave} // Set onMouseLeave event handler
                 >
                     <Card.Img
                         variant="top"
@@ -70,14 +87,13 @@ const CarCard = ({vehicle, highlighted}) => {
                         id={`car-card-img-${vehicle.vehicle_id}`}
                     />
                     <Card.Body id={`car-card-body-${vehicle.vehicle_id}`}>
-                        <Card.Text id={`car-card-text-${vehicle.vehicle_id}`} style={{ fontWeight: '350' }}>
+                        <Card.Text id={`car-card-text-${vehicle.vehicle_id}`} style={{ fontWeight: "350" }}>
                             <strong>{vehicle.year} {vehicle.make} {vehicle.model}</strong> {/* Bold text */}
                         </Card.Text>
                         <Card.Text id={`car-card-price-${vehicle.vehicle_id}`}>
                             {"$" + vehicle.price.toLocaleString()}
                         </Card.Text>
                     </Card.Body>
-
                 </StyledCard>
             ) : null}
             {showModal && vehicle && (
