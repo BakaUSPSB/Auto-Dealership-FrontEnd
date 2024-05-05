@@ -1,89 +1,97 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Button, Col } from "react-bootstrap";
-import CarCard from "./car_card.jsx"; // Updated import path
-import top5Service from "../../services/top5Service.jsx";
+import { Container, Row, Button, Col, Image } from "react-bootstrap";
+import CarCard from "./car_card";
+import top5Service from "../../services/top5Service";
 
-const CardCarousel = ({ highlightedIndex, setHighlightedIndex }) => {
+const CardCarousel = () => {
   const [vehicles, setVehicles] = useState([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const highlightedImageStyle = {
+    width: "100%",
+    height: "75vh",
+    objectFit: "cover",
+    margin: 0,
+    padding: 0,
+  };
 
   useEffect(() => {
-    // Fetch the data when the component mounts
-    top5Service
-      .getTop5()
-      .then((data) => {
-        if (data.status === "success") {
-          setVehicles(data.data);
+    top5Service.getTop5()
+      .then((response) => {
+        if (response.status === "success") {
+          setVehicles(response.data);
         } else {
-          console.error("Failed to fetch top vehicles:", data.message);
+          console.error("Failed to fetch top vehicles:", response.message);
         }
       })
       .catch((error) => {
         console.error("Error fetching top vehicles:", error);
       });
-  }, []); // Empty dependency array ensures the effect runs only once when the component mounts
+  }, []);
 
-  // Navigate to the previous card
-  const goToPrevCard = () => {
-    setHighlightedIndex(
-      (prevIndex) => (prevIndex - 1 + vehicles.length) % vehicles.length
-    );
-  };
-
-  // Navigate to the next card
-  const goToNextCard = () => {
+  const handleHighlightedImageClick = () => {
+    // Trigger the onClick event for the respective CarCard
     setHighlightedIndex((prevIndex) => (prevIndex + 1) % vehicles.length);
   };
 
-  // Handler for clicking a card
-  const handleCardClick = (index) => {
-    setHighlightedIndex(index);
-  };
-
-  const buttonStyle = {
-    margin: "0 10px",
-  };
-
-  const cardWrapperStyle = {
-    width: "fit-content", // Adjusted width to fit the content
-    height: "fit-content", // Adjusted height to fit the content
-    margin: "0", // Removed margin
-    padding: "0", // Removed padding
-  };
-
   return (
-    <Container fluid id="card-carousel-container">
-      <Row className="align-items-center justify-content-center" id="card-row">
-        <Col xs={1} className="d-flex justify-content-center">
-          <Button
-            id="previous-button"
-            onClick={goToPrevCard}
-            style={buttonStyle}
-          >
-            &lt;
-          </Button>
-        </Col>
-        {vehicles.map((vehicle, index) => (
-          <Col
-            xs={2}
-            key={index}
-            id={`card-${index}`}
-            style={cardWrapperStyle}
-            onClick={() => handleCardClick(index)}
-          >
-            <CarCard
-              id={`car-card-${index}`}
-              vehicle={vehicle}
-              highlighted={index === highlightedIndex}
-            />
+    <div className="carousel-container">
+      <div className="highlighted-image-container">
+        {vehicles.length > 0 && (
+          <Image
+            src={`${process.env.PUBLIC_URL}/cars/${vehicles[highlightedIndex].body_type.toLowerCase()}/${vehicles[highlightedIndex].body_type.toLowerCase()}.jpg`}
+            fluid
+            style={highlightedImageStyle}
+            className="highlighted-vehicle-image"
+            onClick={handleHighlightedImageClick} // Attach onClick handler to the Image
+          />
+        )}
+      </div>
+      <Container fluid id="card-carousel-container" style={{ padding: 10 }}>
+        <Row className="align-items-center justify-content-center" id="button-and-card-row">
+          <Col xs={1} className="d-flex justify-content-center" id="previous-button-column">
+            <Button
+              id="previous-button"
+              onClick={() =>
+                setHighlightedIndex((prevIndex) =>
+                  (prevIndex - 1 + vehicles.length) % vehicles.length
+                )
+              }
+              style={{ margin: "0 10px" }}
+            >
+              &lt;
+            </Button>
           </Col>
-        ))}
-        <Col xs={1} className="d-flex justify-content-center">
-          <Button id="next-button" onClick={goToNextCard} style={buttonStyle}>
-            &gt;
-          </Button>
-        </Col>
-      </Row>
-    </Container>
+          {vehicles.map((vehicle, index) => (
+            <Col
+              xs={2}
+              key={index}
+              id={`card-wrapper-${index}`}
+              onClick={() => setHighlightedIndex(index)}
+              className="d-flex justify-content-center"
+            >
+              <CarCard
+                id={`car-card-${index}`}
+                vehicle={vehicle}
+                highlighted={index === highlightedIndex}
+              />
+            </Col>
+          ))}
+          <Col xs={1} className="d-flex justify-content-center" id="next-button-column">
+            <Button
+              id="next-button"
+              onClick={() =>
+                setHighlightedIndex((prevIndex) =>
+                  (prevIndex + 1) % vehicles.length
+                )
+              }
+              style={{ margin: "0 10px" }}
+            >
+              &gt;
+            </Button>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 
