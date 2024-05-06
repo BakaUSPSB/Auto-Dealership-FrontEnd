@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { Modal, Button, Form, Row, Col, Table } from "react-bootstrap";
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import negotiationService from "../../services/negotiationService";
+import CarDetails from "../display/car_details"; // Import CarDetails component
 import ScheduleTestDrive from "../../components/homepage/scheduleTestDrive";
+
 
 const CarModal = ({ vehicle, show, handleClose }) => {
   const [offerPrice, setOfferPrice] = useState("");
   const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmitOffer = async (e) => {
     e.preventDefault();
@@ -25,6 +29,15 @@ const CarModal = ({ vehicle, show, handleClose }) => {
     }
   };
 
+  const handleBuyNow = () => {
+    // Save the vehicle data in local storage as checkoutVehicle
+    //localStorage.setItem("checkoutVehicle", JSON.stringify(vehicle));
+    //navigate({ pathname: "/purchase", state: { vehicle }});
+    navigate(`/purchase/${vehicle.vehicle_id}`); // Replace vehicleId with the actual vehicle ID you want to pass
+
+    //console.log(localStorage.getItem("checkoutVehicle"))
+  };
+
   const isOfferPriceEntered = offerPrice.trim() !== ""; // Check if offer price is entered
 
   return (
@@ -32,34 +45,6 @@ const CarModal = ({ vehicle, show, handleClose }) => {
       <style>{`
         .custom-modal {
           max-width: 75% !important; /* Set the maximum width of the modal to 75% of the viewport */
-        }
-
-        #carModalTitle {
-          /* Add custom styles for modal title */
-        }
-
-        #carImage {
-          height: 100%;
-          width: 100%;
-          object-fit: contain;
-        }
-
-        #makeLabel, #modelLabel, #bodyTypeLabel, #colorLabel, #yearLabel,
-        #priceLabel, #transmissionLabel, #milesLabel, #mpgLabel, #fuelLabel {
-          font-weight: bold;
-        }
-
-        #makeValue, #modelValue, #bodyTypeValue, #colorValue, #yearValue,
-        #priceValue, #transmissionValue, #milesValue, #mpgValue, #fuelValue {
-          /* Add custom styles for table values */
-        }
-
-        #offerPriceInput, #messageInput {
-          /* Add custom styles for form inputs */
-        }
-
-        #submitOfferButton, #closeButton {
-          /* Add custom styles for buttons */
         }
       `}</style>
 
@@ -84,50 +69,7 @@ const CarModal = ({ vehicle, show, handleClose }) => {
               />
             </Col>
             <Col md={6}>
-              <Table bordered>
-                <tbody>
-                  <tr>
-                    <td id="makeLabel">Make</td>
-                    <td id="makeValue">{vehicle.make}</td>
-                  </tr>
-                  <tr>
-                    <td id="modelLabel">Model</td>
-                    <td id="modelValue">{vehicle.model}</td>
-                  </tr>
-                  <tr>
-                    <td id="bodyTypeLabel">Body Type</td>
-                    <td id="bodyTypeValue">{vehicle.body_type}</td>
-                  </tr>
-                  <tr>
-                    <td id="colorLabel">Color</td>
-                    <td id="colorValue">{vehicle.color}</td>
-                  </tr>
-                  <tr>
-                    <td id="yearLabel">Year</td>
-                    <td id="yearValue">{vehicle.year}</td>
-                  </tr>
-                  <tr>
-                    <td id="priceLabel">Price</td>
-                    <td id="priceValue">${vehicle.price}</td>
-                  </tr>
-                  <tr>
-                    <td id="transmissionLabel">Transmission</td>
-                    <td id="transmissionValue">{vehicle.transmission}</td>
-                  </tr>
-                  <tr>
-                    <td id="milesLabel">Miles</td>
-                    <td id="milesValue">{vehicle.miles}</td>
-                  </tr>
-                  <tr>
-                    <td id="mpgLabel">MPG</td>
-                    <td id="mpgValue">{vehicle.mpg}</td>
-                  </tr>
-                  <tr>
-                    <td id="fuelLabel">Fuel</td>
-                    <td id="fuelValue">{vehicle.fuel_type}</td>
-                  </tr>
-                </tbody>
-              </Table>
+              <CarDetails vehicle={vehicle} /> {/* Render CarDetails component */}
               <Form>
                 <Row>
                   <Col>
@@ -164,6 +106,9 @@ const CarModal = ({ vehicle, show, handleClose }) => {
               Submit Offer
             </Button>
           )}
+          <Button variant="primary" onClick={handleBuyNow} id="buyNowButton">
+            Buy Now
+          </Button>
           <Button variant="secondary" onClick={handleClose} id="closeButton">
             Close
           </Button>
