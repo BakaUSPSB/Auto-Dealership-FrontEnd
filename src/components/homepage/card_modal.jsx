@@ -3,17 +3,21 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import negotiationService from "../../services/negotiationService";
 import CarDetails from "../display/car_details"; // Import CarDetails component
+import ScheduleTestDrive from "../../components/homepage/scheduleTestDrive";
+
 
 const CarModal = ({ vehicle, show, handleClose }) => {
   const [offerPrice, setOfferPrice] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmitOffer = async () => {
+  const handleSubmitOffer = async (e) => {
+    e.preventDefault();
     const token = localStorage.getItem("token");
     if (!token) {
       // Handle redirection to login page or show login modal
-      return;
+      alert("Please login in to make an offer");
+      window.location.href = "/login";
     }
     const response = await negotiationService.negotiation(
       vehicle.vehicle_id,
@@ -56,7 +60,9 @@ const CarModal = ({ vehicle, show, handleClose }) => {
           <Row>
             <Col md={6}>
               <img
-                src={`${process.env.PUBLIC_URL}/cars/${vehicle.body_type}/${vehicle.body_type}.jpg`}
+                src={`${
+                  process.env.PUBLIC_URL
+                }/cars/${vehicle.body_type.toLowerCase()}/${vehicle.body_type.toLowerCase()}.jpg`}
                 alt={`${vehicle.body_type}_image`}
                 style={{ height: "100%", width: "100%", objectFit: "contain" }}
                 id="carImage"
@@ -90,8 +96,13 @@ const CarModal = ({ vehicle, show, handleClose }) => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
+          <ScheduleTestDrive />
           {isOfferPriceEntered && ( // Only render if offer price is entered
-            <Button variant="primary" onClick={handleSubmitOffer} id="submitOfferButton">
+            <Button
+              variant="primary"
+              onClick={handleSubmitOffer}
+              id="submitOfferButton"
+            >
               Submit Offer
             </Button>
           )}

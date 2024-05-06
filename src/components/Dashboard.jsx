@@ -15,8 +15,10 @@ function Dashboard() {
       return <TechDash />;
     case "customer":
       return <DashboardPage />;
-    //case "admin":
-    //  return <AdminDash />;
+
+    // case "admin":
+    //   return <AdminDash />;
+
     default:
       return <LoginPage />;
   }
