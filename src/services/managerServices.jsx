@@ -15,7 +15,7 @@ export default class ManagerServices {
       return null;
     }
   }
-  
+  // the next three routes are for seeing and adjusting the inventory
   static async fetchServices() {
     try {
       const response = await axios.get(
@@ -68,4 +68,58 @@ export default class ManagerServices {
       return null;
     }
   }
+  // these routes are for the manager to interact with the contracts
+  static async fetchPurchases() {
+      try {
+          const response = await axios.get(`${API_ROOT_URL}/user/purchases`, {
+              headers: { Authorization: `Bearer ${token}` }
+          });
+          return response.data;
+      } catch (error) {
+          console.error('Error fetching purchases:', error.response || error.message);
+          throw error;
+      }
+  }
+  static async generateContract(purchaseId) {
+      try {
+          const response = await axios.post(`${API_ROOT_URL}/user/purchases/${purchaseId}/contract`, {}, {
+              headers: { Authorization: `Bearer ${token}` },
+              responseType: 'blob' // assuming the response is a PDF file
+          });
+          // Handling file download directly here, can modify depending on requirements
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `Purchase_Contract_${purchaseId}.pdf`);
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+      } catch (error) {
+          console.error('Error generating contract:', error.response || error.message);
+          throw error;
+      }
+  }
+
+  static async signContract(purchaseId, signature) {
+      try {
+          const response = await axios.post(`${API_ROOT_URL}/user/purchases/${purchaseId}/contract/sign`, {
+              signature
+          }, {
+              headers: { Authorization: `Bearer ${token}` },
+              responseType: 'blob' // assuming the response is a PDF file
+          });
+          // Handling file download directly here, can modify depending on requirements
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `Signed_Contract_${purchaseId}.pdf`);
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+      } catch (error) {
+          console.error('Error signing contract:', error.response || error.message);
+          throw error;
+      }
+    }
+
 }

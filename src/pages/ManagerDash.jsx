@@ -6,6 +6,8 @@ import NegotiationTable from "../components/negotiations.jsx";
 import CarForm from "../components/updateVehicles.jsx";
 import MonthlySalesReport from "../components/monthlySalesReport.jsx";
 import ManagerServiceMenu from "../components/Managerservices.jsx";
+import ManagerContracts from "../components/ManagerContracts.jsx";
+// import ManagerCredit from "../components/ManagerCredit.jsx";
 
 const Dashboard = () => {
   const mockAppointments = [
@@ -51,6 +53,12 @@ const Dashboard = () => {
         <Nav.Item>
           <Nav.Link eventKey="ManagerServiceMenu">Manager Service Menu</Nav.Link>
         </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="ManagerContracts">Manager Contracts</Nav.Link>
+        </Nav.Item>
+        {/* <Nav.Item>
+          <Nav.Link eventKey="ManagerCredit">Manager Credit</Nav.Link>
+        </Nav.Item> */}
       </Nav>
 
       <Container fluid className="quadrant">
@@ -65,6 +73,8 @@ const Dashboard = () => {
         {selectedComponent === "addCar" && <CarForm />}
         {selectedComponent === "MonthlySalesReport" && <MonthlySalesReport />}
         {selectedComponent === "ManagerServiceMenu" && <ManagerServiceMenu />}
+        {selectedComponent === "ManagerContracts" && <ManagerContracts />}
+        {/* {selectedComponent === "ManagerCredit" && <ManagerCredit />} */}
       </Container>
     </Container>
   );
