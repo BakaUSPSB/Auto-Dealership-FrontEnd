@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Col, Container, Form, Row, Table, Modal} from 'react-bootstrap';
 import ViewCustomerAppointmentService from '../services/viewCustomerAppoinmentService.jsx';
 
+//THIS IS FOR THE CUSTOMER VIEW APPOINTMENTS PAGE
+
 const AppointmentCard = ({ customer_id }) => {
   const [response, setResponse] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

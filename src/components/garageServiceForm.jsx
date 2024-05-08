@@ -93,6 +93,7 @@ const GarageServiceForm = ({ onSubmit, onCancel, customerVehicleId }) => {
           <Form.Group className="mb-3">
             <Form.Label>Customer Note</Form.Label>
             <Form.Control type="text" value={customerNote} onChange={e => setCustomerNote(e.target.value)} />
+            <option value="">Select...</option>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Technician Note</Form.Label>
