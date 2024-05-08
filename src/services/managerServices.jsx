@@ -122,4 +122,67 @@ export default class ManagerServices {
       }
     }
 
+  // Addon management
+  static async fetchAddons() {
+    try {
+      const response = await axios.get(
+        `${API_ROOT_URL}/user/inventory/addons`, 
+        {headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching addons:', error.response || error.message);
+      throw error;
+    }
+  }
+
+  static async getAddon(addonId) {
+    try {
+      const response = await axios.get(
+        `${API_ROOT_URL}/user/inventory/addon/${addonId}`, 
+        {headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error retrieving addon:', error.response || error.message);
+      throw error;
+    }
+  }
+
+  static async createAddon(addonDetails) {
+    try {
+      const response = await axios.post(`${API_ROOT_URL}/user/inventory/addons`, addonDetails, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error creating addon:', error.response || error.message);
+      throw error;
+    }
+  }
+
+  static async updateAddon(addonId, addonDetails) {
+    try {
+      const response = await axios.put(`${API_ROOT_URL}/user/inventory/addon/${addonId}`, addonDetails, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error updating addon:', error.response || error.message);
+      throw error;
+    }
+  }
+
+  static async changeAddonStatus(addonId, status) {
+    try {
+      const response = await axios.put(`${API_ROOT_URL}/user/inventory/addons/${addonId}/status`, { status }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error changing addon status:', error.response || error.message);
+      throw error;
+    }
+  }
 }
+

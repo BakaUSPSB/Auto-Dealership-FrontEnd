@@ -8,6 +8,7 @@ import MonthlySalesReport from "../components/monthlySalesReport.jsx";
 import ManagerServiceMenu from "../components/Managerservices.jsx";
 import ManagerContracts from "../components/ManagerContracts.jsx";
 // import ManagerCredit from "../components/ManagerCredit.jsx";
+import ManagerAddonMenu from "../components/ManagerAddons.jsx";
 
 const Dashboard = () => {
   const mockAppointments = [
@@ -59,6 +60,9 @@ const Dashboard = () => {
         {/* <Nav.Item>
           <Nav.Link eventKey="ManagerCredit">Manager Credit</Nav.Link>
         </Nav.Item> */}
+        <Nav.Item>
+          <Nav.Link eventKey="ManagerAddonMenu">Manager Addon Menu</Nav.Link>
+        </Nav.Item>
       </Nav>
 
       <Container fluid className="quadrant">
@@ -75,6 +79,7 @@ const Dashboard = () => {
         {selectedComponent === "ManagerServiceMenu" && <ManagerServiceMenu />}
         {selectedComponent === "ManagerContracts" && <ManagerContracts />}
         {/* {selectedComponent === "ManagerCredit" && <ManagerCredit />} */}
+        {selectedComponent === "ManagerAddonMenu" && <ManagerAddonMenu />}
       </Container>
     </Container>
   );
