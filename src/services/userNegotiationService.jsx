@@ -19,7 +19,7 @@ export default class userNegotiationService {
   static async negotiation_details(negotiation_id) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
+      const response = await axios.get(
         `${API_ROOT_URL}/user/negotiation/negotiation/${negotiation_id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       ); // pass the token in the header
@@ -33,7 +33,7 @@ export default class userNegotiationService {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${API_ROOT_URL}/user/negotiation/negotiation/${negotiation_id}/offer`,
+        `${API_ROOT_URL}/user/negotiation/negotiation/${negotiation_id}/counter-offer`,
         {
           offer_price: price,
           message: text,
@@ -50,7 +50,8 @@ export default class userNegotiationService {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${API_ROOT_URL}/user/negotiation/negotiation/${negotiation_id}/offer/accept`,
+        `${API_ROOT_URL}/user/negotiation/negotiation/${negotiation_id}/accept-offer`,
+        {},
 
         { headers: { Authorization: `Bearer ${token}` } }
       ); // pass the token in the header

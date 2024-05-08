@@ -5,7 +5,7 @@ import negotiationService from "../services/negotiationService";
 import RejectOffer from "./rejectOffer";
 import AcceptOffer from "./agreeOffer";
 
-const NegotiationDetails = ({ negotiationId }) => {
+const UserNegotiationDetails = ({ negotiationId }) => {
   const [details, setDetails] = useState(null);
 
   useEffect(() => {
@@ -54,10 +54,10 @@ const NegotiationDetails = ({ negotiationId }) => {
               <td>{offer.offer_status}</td>
               <td>
                 {" "}
-                {isManager &&
+                {!isManager &&
                   isLastOffer &&
                   offer.offer_status !== "ACCEPTED" &&
-                  offer.offer_status !== "REJECTED" && (
+                  !offer.offer_status !== "REJECTED" && (
                     <div
                       style={{
                         display: "flex",
@@ -76,4 +76,4 @@ const NegotiationDetails = ({ negotiationId }) => {
     </Table>
   );
 };
-export default NegotiationDetails;
+export default UserNegotiationDetails;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal } from "react-bootstrap";
 import NegotiationDetails from "./negotiationDetails";
+import UserNegotiationDetails from "./userNegotiationDetails";
 import userNegotiationService from "../services/userNegotiationService";
 import negotiationService from "../services/negotiationService";
 import CounterOffer from "./counterOffer";
@@ -134,7 +135,7 @@ const NegotiationTable = () => {
             </Modal.Header>
             <Modal.Body>
               {selectedNegotiation && (
-                <NegotiationDetails
+                <UserNegotiationDetails
                   negotiationId={selectedNegotiation.negotiation_id}
                 />
               )}

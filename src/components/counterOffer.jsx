@@ -21,7 +21,7 @@ const CounterOffer = ({ negotiation_id }) => {
         textInput,
         negotiation_id
       );
-      if (response.code === 201) {
+      if (response.code === 200) {
         alert("Counter offer has been made");
       }
       if (response.code === 400) {
