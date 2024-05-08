@@ -3,6 +3,7 @@ import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import negotiationService from "../../services/negotiationService";
 import CarDetails from "../display/car_details";
+import ScheduleTestDrive from "./scheduleTestDrive";
 
 const CarModal = ({ vehicle, show, handleClose }) => {
   const [offerPrice, setOfferPrice] = useState("");
@@ -120,6 +121,7 @@ const CarModal = ({ vehicle, show, handleClose }) => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
+          <ScheduleTestDrive />
           {isOfferPriceEntered && (
             <Button
               variant="primary"
