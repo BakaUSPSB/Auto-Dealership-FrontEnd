@@ -142,7 +142,7 @@ function TechDash() {
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="primary" onClick={handleTechnicianNotesUpdate}>Add Notes</Button>
-                            <Button variant="primary" onClick={handleUpdate}>Terminate Ticket</Button>
+                            <Button variant="danger" onClick={handleUpdate}>Terminate Ticket</Button>
                             <Button variant="secondary" onClick={handleCloseModal}>Exit</Button>
                         </Modal.Footer>
                     </Modal>
