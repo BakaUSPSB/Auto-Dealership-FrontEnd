@@ -220,6 +220,11 @@ function LoginPage() {
                         <Button variant="link" onClick={toggleForm}>
                             {showSignUp ? 'Back to Login' : 'Sign Up'}
                         </Button>
+                        {!showSignUp && (
+                            <Button variant='link' onClick={() => window.location.href = '/admin_login'}>
+                                Employee Login
+                            </Button>
+                        )}
                     </div>
                 </Col>
             </Row>
