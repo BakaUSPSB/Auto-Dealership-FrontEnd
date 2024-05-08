@@ -3,7 +3,7 @@ import ManagerDash from "../pages/ManagerDash";
 import TechDash from "../pages/TechDash";
 import DashboardPage from "../pages/DashboardPage";
 import LoginPage from "../pages/LoginPage";
-import AdminDash from "../pages/AdminDash";
+import AdminDashboard from "../pages/AdminDash";
 
 function Dashboard() {
   const role = localStorage.getItem("role");
@@ -15,8 +15,8 @@ function Dashboard() {
       return <TechDash />;
     case "customer":
       return <DashboardPage />;
-    // case "admin":
-    //   return <AdminDash />;
+    case "admin":
+      return <AdminDashboard />;
     default:
       return <LoginPage />;
   }
