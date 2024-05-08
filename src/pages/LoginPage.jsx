@@ -1,142 +1,12 @@
-import React, { useState } from 'react';
-import { Container, Form, Button, Row, Col, Alert } from 'react-bootstrap';
-import DateOfBirthPicker from '../components/DateofBirthPicker';
-import LoginService from '../services/loginService';
+// src/pages/LoginPage.js
+
+import React from "react";
+import {Container, Row, Col} from "react-bootstrap";
+import LoginForm from "../components/authentication/loginForm";
 
 function LoginPage() {
-    const [showSignUp, setShowSignUp] = useState(false);
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        driverLicenseNum: '',
-        dateOfBirth: ''
-    });
-    const [emailError, setEmailError] = useState('');
-    const [confirmPassword,setConfirmPassword] = useState(''); // New state for confirm password
-    const [passwordError, setPasswordError] = useState(''); // New state for password error
-    const [signupSuccess, setSignupSuccess] = useState(false); // State to track signup success
-    const [driverLicenseError, setDriverLicenseError] = useState('');
-    const [signupError, setSignupError] = useState('');
-
-
-    const toggleForm = () => {
-        setShowSignUp(!showSignUp);
-    };
-    
-    const sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-    // New function to handle confirm password change
-    const handleConfirmPasswordChange = (e) => {
-        const { value } = e.target;
-        setConfirmPassword(value);
-        if (value !== formData.password) {
-            setPasswordError('Passwords do not match');
-        } else {
-            setPasswordError('');
-        }
-    };
-    const validateEmail = (email) => {
-        // Regular expression for email validation
-        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        return isValidEmail;
-    };
-
-    // Function to handle email change
-    const handleEmailChange = (e) => {
-        const { value } = e.target;
-        setFormData({ ...formData, email: value });
-        if (value && !validateEmail(value)) {
-            setEmailError('Invalid email format');
-        } else {
-            setEmailError('');
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (showSignUp) {
-            if (formData.password !== confirmPassword) {
-                setPasswordError('Passwords do not match');
-                return;
-            }
-            if (!validateEmail(formData.email)) {
-                setEmailError('Invalid email format');
-                return;
-            }
-            if (!validateDriverLicense(formData.driverLicenseNum)) {
-                setDriverLicenseError('Invalid driver\'s license number format');
-                return;
-            }
-            try {
-                const response = await LoginService.signup(
-                    formData.firstName,
-                    formData.lastName,
-                    formData.email,
-                    formData.password,
-                    formData.dateOfBirth,
-                    formData.driverLicenseNum
-                );
-                if(response.code === 400){
-                    setSignupSuccess(false);
-                    setSignupError(response.message);
-                }
-                if (response.code === 201) {
-                    setSignupSuccess(true);
-                }
-            } catch (error) {
-                    console.error(error);
-                
-            }
-        } else {
-            if (!validateEmail(formData.email)) {
-                setEmailError('Invalid email format');
-                return;
-            }
-            try {
-                const response = await LoginService.login(formData.email, formData.password);
-                if (response.code === 200) {
-                    // Store the token in local storage
-                    localStorage.setItem('token', response.data.access_token);
-                    localStorage.setItem('id',response.data.customer_id);
-                    localStorage.setItem('firstName',response.data.first_name);
-                    if(!response.data.role){
-                        localStorage.setItem('role','customer');
-                    }
-                    // Redirect to the home page
-                    sleep(500).then(() => {window.location.href = '/';})
-                }
-                if(response.code === 400){
-                    setSignupSuccess(false);
-                    setSignupError(response.message);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    };
-    // Function to validate driver's license number
-    const validateDriverLicense = (driverLicense) => {
-        // Check if the driver's license number is in the correct format for New Jersey
-        const isValidLicense = /^[A-Za-z][0-9]{14}$/.test(driverLicense);
-        return isValidLicense;
-    };
-    // Function to handle driver's license number change
-    const handleDriverLicenseChange = (e) => {
-        const { value } = e.target;
-        setFormData({ ...formData, driverLicenseNum: value });
-        if (value && !validateDriverLicense(value)) {
-            setDriverLicenseError('Invalid driver\'s license number format');
-        } else {
-            setDriverLicenseError('');
-        }
+    const handleSuccessfulLogin = () => {
+        window.location.href = "/";
     };
 
     return (
@@ -144,6 +14,17 @@ function LoginPage() {
             fluid
             className="d-flex align-items-center justify-content-center"
             style={{
+                backgroundImage: `url('/assets/blur.jpg')`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundAttachment: "fixed",
+                minHeight: "100vh",
+                backgroundColor: '#1c1c1c'
+            }}
+        >
+
+            <LoginForm onSuccess={handleSuccessfulLogin}/>
+
                 backgroundImage: `url('/cars/carbackground.jpg')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
