@@ -21,4 +21,17 @@ export default class schedulingService {
       return null;
     }
   }
+  static async getAvailableTestDrive() {
+    try {
+      const token = localStorage.getItem("token"); // get the token from local storage
+      const response = await axios.get(
+        `${API_ROOT_URL}/customer/time-slots/test-drive/available`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      ); // pass the token in the header
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
 }
