@@ -65,8 +65,6 @@ const Dashboard = () => {
         {selectedComponent === "negotiations" && <NegotiationTable />}
         {selectedComponent === "Appointments" && (
           <Appointments
-            appointments={mockAppointments}
-            serviceTechs={mockServiceTechs}
           />
         )}
         {selectedComponent === "Policies" && <PoliciesTable />}
