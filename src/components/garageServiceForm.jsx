@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import GarageService from '../services/garageService';
+import moment from 'moment';
 
 const GarageServiceForm = ({ onSubmit, onCancel, customerVehicleId }) => {
   const [timeSlotId, setTimeSlotId] = useState('');
@@ -57,6 +58,17 @@ const GarageServiceForm = ({ onSubmit, onCancel, customerVehicleId }) => {
     onSubmit(event, data);
   };
 
+  const formatTime = (time) => {
+    const hour = moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').hour();
+    if (hour >= 9 && hour <= 12) {
+      return moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').format('MMMM D, YYYY, hh:mm A');
+    } else if (hour >= 1 && hour <= 5) {
+      return moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').format('MMMM D, YYYY, hh:mm') + ' PM';
+    } else {
+      return moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').format('MMMM D, YYYY, HH:mm');
+    }
+  };
+
   useEffect(() => {
     GarageService.getServiceTimeSlots()
       .then((response) => {
@@ -83,12 +95,12 @@ const GarageServiceForm = ({ onSubmit, onCancel, customerVehicleId }) => {
           <Form.Group className="mb-3">
             <Form.Label>Time Slot</Form.Label>
             <Form.Control as="select" value={timeSlotId} onChange={e => setTimeSlotId(e.target.value)}>
-                {timeSlots.map((timeSlot) => (
-                    <option key={timeSlot.time_slot_id} value={timeSlot.time_slot_id}>
-                        {timeSlot.start_time} - {timeSlot.end_time}
-                    </option>
+              {timeSlots.sort((a, b) => a.time_slot_id - b.time_slot_id).map((timeSlot) => (
+                <option key={timeSlot.time_slot_id} value={timeSlot.time_slot_id}>
+                  {formatTime(timeSlot.start_time)} - {formatTime(timeSlot.end_time)}
+                </option>
                 ))}
-            </Form.Control>
+              </Form.Control>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Customer Note</Form.Label>

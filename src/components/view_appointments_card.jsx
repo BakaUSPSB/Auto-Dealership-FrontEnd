@@ -65,7 +65,9 @@ const AppointmentCard = ({ customer_id }) => {
                 <td>{appointment.time_slot.properties.start_time}</td>
                 <td>{appointment.status}</td>
                 <td>
+                  {appointment.status !== 'CANCELLED' && (
                   <Button variant="danger" onClick={() => handleShowModal(appointment)}>Cancel</Button>
+                  )}
                 </td>
               </tr>
             ))}
