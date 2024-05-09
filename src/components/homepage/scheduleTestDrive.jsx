@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
+import Form from 'react-bootstrap/Form';
 import moment from "moment";
-import "react-datepicker/dist/react-datepicker.css";
 import schedulingService from "../../services/schedulingService";
 
 const ScheduleTestDrive = () => {
-  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedTimeSlotId, setSelectedTimeSlotId] = useState(null);
+
+
+  const formatTime = (time) => {
+    const hour = moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').hour();
+    if (hour >= 9 && hour <= 12) {
+      return moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').format('MMMM D, YYYY, hh:mm A');
+    } else if (hour >= 1 && hour <= 5) {
+      return moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').format('MMMM D, YYYY, hh:mm') + ' PM';
+    } else {
+      return moment.utc(time, 'ddd, DD MMM YYYY HH:mm:ss [GMT]').format('MMMM D, YYYY, HH:mm');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,33 +33,6 @@ const ScheduleTestDrive = () => {
 
     fetchData();
   }, []);
-
-  const disabledTimeIntervals = () => {
-    return timeSlots.map((slot) => ({
-      startTime: moment(slot.start_time),
-      endTime: moment(slot.end_time),
-      isAvailable: slot.is_available === 1,
-      timeSlotId: slot.time_slot_id,
-    }));
-  };
-
-  const handleDateTimeChange = (date) => {
-    setSelectedDateTime(date);
-    setSelectedTimeSlotId(null); // Reset selectedTimeSlotId when date changes
-
-    // Find the corresponding time slot when date changes
-    const selectedTime = moment(date);
-    const slot = disabledTimeIntervals().find((interval) => {
-      return (
-        selectedTime.isSameOrAfter(interval.startTime) &&
-        selectedTime.isBefore(interval.endTime) &&
-        interval.isAvailable
-      );
-    });
-    if (slot) {
-      setSelectedTimeSlotId(slot.timeSlotId);
-    }
-  };
 
   const handleClick = async () => {
     try {
@@ -67,25 +50,14 @@ const ScheduleTestDrive = () => {
   return (
     <div id="scheduleTestDriveContainer">
       <div id="datePickerContainer" style={{ display: "flex" }}>
-        <DatePicker
-          id="testDriveDatePicker"
-          selected={selectedDateTime}
-          onChange={handleDateTimeChange} // Handle both date and time changes
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={30}
-          dateFormat="MMMM d, yyyy h:mm aa"
-          minDate={new Date()}
-          filterTime={(time) => {
-            return disabledTimeIntervals().some((interval) => {
-              return (
-                new Date(time) >= interval.startTime.toDate() &&
-                new Date(time) <= interval.endTime.toDate() &&
-                interval.isAvailable
-              );
-            });
-          }}
-        />
+        <Form.Control as="select" value={selectedTimeSlotId} onChange={e => setSelectedTimeSlotId(e.target.value)}>
+          <option value="">Select a time for a test drive...</option>
+          {timeSlots.sort((a, b) => a.time_slot_id - b.time_slot_id).map((timeSlot) => (
+            <option key={timeSlot.time_slot_id} value={timeSlot.time_slot_id}>
+              {formatTime(timeSlot.start_time)} - {formatTime(timeSlot.end_time)}
+            </option>
+          ))}
+        </Form.Control>
         {selectedTimeSlotId && (
           <button
             type="button"
