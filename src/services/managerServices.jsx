@@ -205,4 +205,31 @@ export default class ManagerServices {
     }
   }
 
+  // these routes are for the manager to interact with the vehicles
+  static async createVehicle(vehicleDetails) {
+    try {
+      const token = localStorage.getItem("token"); // get the token from local storage
+      const response = await axios.post(`${API_ROOT_URL}/user/inventory/vehicle`, {
+        vin: vehicleDetails.vin,
+        price: vehicleDetails.price,
+        year: vehicleDetails.year,
+        make: vehicleDetails.make,
+        model: vehicleDetails.model,
+        body_type: vehicleDetails.body_type,
+        miles: vehicleDetails.miles,
+        mpg: vehicleDetails.mpg,
+        color: vehicleDetails.color,
+        fuel_type: vehicleDetails.fuel_type,
+        transmission: vehicleDetails.transmission,
+        image: vehicleDetails.image
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error creating vehicle:', error.response || error.message);
+      return null;
+    }
+  }
+
 }
