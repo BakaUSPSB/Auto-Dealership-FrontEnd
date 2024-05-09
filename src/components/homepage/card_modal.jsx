@@ -117,11 +117,12 @@ const CarModal = ({ vehicle, show, handleClose }) => {
                   </Col>
                 </Row>
               </Form>
+              <ScheduleTestDrive />
             </Col>
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <ScheduleTestDrive />
+
           {isOfferPriceEntered && (
             <Button
               variant="primary"
