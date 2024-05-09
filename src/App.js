@@ -19,7 +19,6 @@ import {
   Button,
 } from "react-bootstrap";
 import IndexPage from "./pages/IndexPage";
-import ServicePage from "./pages/ServicePage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./components/Dashboard";
 import AdminLogin from "./pages/AdminLogin";
@@ -69,9 +68,7 @@ function AppContent() {
               <Nav.Link as={Link} to="/">
                 Home
               </Nav.Link>
-              <Nav.Link as={Link} to="/service">
-                Service
-              </Nav.Link>
+
               {localStorage.getItem("token") ? (
                 <>
                   <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
@@ -90,7 +87,6 @@ function AppContent() {
       </Navbar>
       <Routes>
         <Route path="/" element={<IndexPage />} />
-        <Route path="/service" element={<ServicePage cars={mockCars} />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin_login" element={<AdminLogin />} />
