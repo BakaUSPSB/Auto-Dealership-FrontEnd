@@ -103,6 +103,9 @@ const AppointmentComponent = () => {
               {appointment.status === 'PENDING' && selectedServiceTech[appointment.appointment_id] &&
                 <Button onClick={() => handleConfirmAppointment(appointment)}>Confirm</Button>
               }
+              {appointment.status === 'PENDING' && appointment.appointment_type === 'TEST_DRIVE' &&
+                <Button onClick={() => handleConfirmAppointment(appointment)}>Confirm</Button>
+              }
               {' '}
               {appointment.status !== 'CANCELLED' && 
                 <Button variant='danger' onClick={() => handleCancelAppointment(appointment)}>Cancel</Button>
