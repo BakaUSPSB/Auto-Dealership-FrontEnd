@@ -1,2 +1,2 @@
-export const API_ROOT_URL = "https://zsqtf6x8-5000.use.devtunnels.ms/api";
+export const API_ROOT_URL = "https://backend-app-7btsjsynaa-uc.a.run.app/api";
 
