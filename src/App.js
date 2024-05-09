@@ -61,7 +61,7 @@ function AppContent() {
       <Navbar style={{ backgroundColor: "#000000" }} variant="dark" expand="lg">
         <Container>
           <Navbar.Brand as={Link} to="/">
-            Wheels4Stealz cuz we bad
+            Wheels4Stealz
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav"></Navbar.Toggle>
           <Navbar.Collapse id="basic-navbar-nav">
